@@ -7,7 +7,7 @@
 gyrosegment(A, B, s = 1, n = 100)
 }
 \arguments{
-\item{A, B}{two points (of the same dimension)}
+\item{A, B}{two distinct points (of the same dimension)}
 
 \item{s}{positive number, the curvature}
 

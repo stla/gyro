@@ -176,12 +176,11 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
   subd <- gyrosubdiv(A, B, C, s)
   for(i in seq_len(iterations-1)){
     subd <- flatten(lapply(subd, function(triplet){
-      gyrosubdiv(triplet[[1]], triplet[[2]], triplet[[3]], s)
+      gyrosubdiv(triplet[[1L]], triplet[[2L]], triplet[[3L]], s)
     }))
   }
   vertices <-
-    do.call(cbind,
-            lapply(subd, function(triplet) do.call(cbind, triplet)))
+    do.call(cbind, lapply(subd, function(triplet) do.call(cbind, triplet)))
   indices <- matrix(1L:ncol(vertices), nrow = 3L)
   mesh0 <- tmesh3d(
     vertices = vertices,
@@ -243,6 +242,83 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
 #' open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(zoom = 0.7)
 #' plotGyrohull3d(points, s = 0.4)
+#'
+#' # a non-convex polyhedron with triangular faces ####
+#' vertices <- rbind(
+#'   c(-2.1806973249, -2.1806973249, -2.1806973249),
+#'   c(-3.5617820682, 0.00000000000, 0.00000000000),
+#'   c(0.00000000000, -3.5617820682, 0.00000000000),
+#'   c(0.00000000000, 0.00000000000, -3.5617820682),
+#'   c(-2.1806973249, -2.1806973249, 2.18069732490),
+#'   c(0.00000000000, 0.00000000000, 3.56178206820),
+#'   c(-2.1806973249, 2.18069732490, -2.1806973249),
+#'   c(0.00000000000, 3.56178206820, 0.00000000000),
+#'   c(-2.1806973249, 2.18069732490, 2.18069732490),
+#'   c(2.18069732490, -2.1806973249, -2.1806973249),
+#'   c(3.56178206820, 0.00000000000, 0.00000000000),
+#'   c(2.18069732490, -2.1806973249, 2.18069732490),
+#'   c(2.18069732490, 2.18069732490, -2.1806973249),
+#'   c(2.18069732490, 2.18069732490, 2.18069732490))
+#' triangles <- 1 + rbind(
+#'   c(3, 2, 0),
+#'   c(0, 1, 3),
+#'   c(2, 1, 0),
+#'   c(4, 2, 5),
+#'   c(5, 1, 4),
+#'   c(4, 1, 2),
+#'   c(6, 7, 3),
+#'   c(3, 1, 6),
+#'   c(6, 1, 7),
+#'   c(5, 7, 8),
+#'   c(8, 1, 5),
+#'   c(7, 1, 8),
+#'   c(9, 2, 3),
+#'   c(3, 10, 9),
+#'   c(9, 10, 2),
+#'   c(5, 2, 11),
+#'   c(11, 10, 5),
+#'   c(2, 10, 11),
+#'   c(3, 7, 12),
+#'   c(12, 10, 3),
+#'   c(7, 10, 12),
+#'   c(13, 7, 5),
+#'   c(5, 10, 13),
+#'   c(13, 10, 7))
+#' edges0 <- do.call(c, lapply(1:nrow(triangles), function(i){
+#'   face <- triangles[i, ]
+#'   list(
+#'     sort(c(face[1], face[2])),
+#'     sort(c(face[1], face[3])),
+#'     sort(c(face[2], face[3]))
+#'   )
+#' }))
+#' edges <- do.call(rbind, edges0)
+#' edges <- edges[!duplicated(edges), ]
+#' s <- 2
+#' library(rgl)
+#' open3d(windowRect = c(50, 50, 1074, 562))
+#' mfrow3d(1, 2)
+#' view3d(zoom = 0.65)
+#' for(i in 1:nrow(triangles)){
+#'   triangle <- triangles[i, ]
+#'   A <- vertices[triangle[1], ]
+#'   B <- vertices[triangle[2], ]
+#'   C <- vertices[triangle[3], ]
+#'   gtriangle <- gyrotriangle(A, B, C, s)
+#'   shade3d(gtriangle, color = "violetred")
+#' }
+#' for(i in 1:nrow(edges)){
+#'   edge <- edges[i, ]
+#'   A <- vertices[edge[1], ]
+#'   B <- vertices[edge[2], ]
+#'   gtube <- gyrotube(A, B, s, radius = 0.06)
+#'   shade3d(gtube, color = "darkviolet")
+#' }
+#' spheres3d(vertices, radius = 0.09, color = "deeppink")
+#' # now plot the hyperbolic convex hull
+#' next3d()
+#' view3d(zoom = 0.65)
+#' plotGyrohull3d(vertices, s)
 plotGyrohull3d <- function(
   points, s = 1, iterations = 5, n = 100
 ){
@@ -271,4 +347,5 @@ plotGyrohull3d <- function(
   spheres3d(Vertices, radius = 0.05, color = "yellow")
   invisible(NULL)
 }
+
 

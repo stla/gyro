@@ -156,9 +156,12 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
     do.call(cbind,
             lapply(subd, function(triplet) do.call(cbind, triplet)))
   indices <- matrix(1L:ncol(vertices), nrow = 3L)
-  mesh <- tmesh3d(
+  mesh0 <- tmesh3d(
     vertices = vertices,
     indices = indices
   )
-  vcgClean(mesh, sel = c(0, 7), silent = TRUE)
+  mesh <- vcgClean(mesh0, sel = c(0, 7), silent = TRUE)
+  mesh[["remvert"]] <- NULL
+  mesh[["remface"]] <- NULL
+  mesh
 }

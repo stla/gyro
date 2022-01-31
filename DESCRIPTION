@@ -1,0 +1,12 @@
+Package: gyro
+Type: Package
+Title: Three-Dimensional Hyperbolic Geometry
+Version: 0.1.0
+Author: Stéphane Laurent
+Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
+Description: Hyperbolic geometry in the hyperboloid model, with emphasis on the 3D case. The methods are based on the gyrovector space theory developed by A. A. Ungar that can be found in the book 'Analytic Hyperbolic Geometry: Mathematical Foundations And Applications' <doi.org/10.1142/5914>.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: rgl, Rvcg, purrr, cxhull (>= 0.3.0)
+RoxygenNote: 7.1.2

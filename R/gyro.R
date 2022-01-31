@@ -208,3 +208,67 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
     lapply(split(as.data.frame(Triangles), gl(ntriangles, 3L)), as.matrix)
   return(list(vertices = Vertices, edges = Edges, triangles = Triangles))
 }
+
+#' Title
+#'
+#' @param points
+#' @param s
+#' @param iterations
+#' @param n
+#'
+#' @return
+#' @export
+#'
+#' @importFrom rgl shade3d spheres3d
+#' @importFrom Morpho mergeMeshes
+#' @importFrom Rvcg vcgClean
+#'
+#' @examples library(gyro)
+#' library(rgl)
+#' # Triangular orthobicopula ####
+#' points <- rbind(
+#'   c(1, -1/sqrt(3), sqrt(8/3)),
+#'   c(1, -1/sqrt(3), -sqrt(8/3)),
+#'   c(-1, -1/sqrt(3), sqrt(8/3)),
+#'   c(-1, -1/sqrt(3), -sqrt(8/3)),
+#'   c(0, 2/sqrt(3), sqrt(8/3)),
+#'   c(0, 2/sqrt(3), -sqrt(8/3)),
+#'   c(1, sqrt(3), 0),
+#'   c(1, -sqrt(3), 0),
+#'   c(-1, sqrt(3), 0),
+#'   c(-1, -sqrt(3), 0),
+#'   c(2, 0, 0),
+#'   c(-2, 0, 0)
+#' )
+#' open3d(windowRect = c(50, 50, 562, 562))
+#' view3d(zoom = 0.7)
+#' plotGyrohull3d(points, s = 0.4)
+plotGyrohull3d <- function(
+  points, s = 1, iterations = 5, n = 100
+){
+  hull <- .cxhull(points)
+  Triangles <- hull[["triangles"]]
+  Edges <- hull[["edges"]]
+  Vertices <- hull[["vertices"]]
+  ntriangles <- length(Triangles)
+  Gtriangles <- vector("list", ntriangles)
+  for(i in 1:ntriangles){
+    triangle <- Triangles[[i]]
+    Gtriangles[[i]] <- gyrotriangle(
+      triangle[1L, ], triangle[2L, ], triangle[3L, ],
+      s = s, iterations = iterations
+    )
+  }
+  mesh <- vcgClean(mergeMeshes(Gtriangles), sel = 0, silent = TRUE)
+  shade3d(mesh, color = "navy")
+  for(edge in Edges){
+    gtube <- gyrotube(
+      edge[1L, ], edge[2L, ],
+      s = s, n = n, radius = 0.03
+    )
+    shade3d(gtube, color = "yellow")
+  }
+  spheres3d(Vertices, radius = 0.05, color = "yellow")
+  invisible(NULL)
+}
+

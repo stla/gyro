@@ -112,3 +112,53 @@ gyrotube <- function(A, B, s = 1, n = 100, radius, sides = 90, caps = FALSE){
   cylinder3d(points, radius = radius, sides = sides, closed = closed)
 }
 
+gyrosubdiv <- function(A1, A2, A3, s){
+  M12 <- gyromidpoint(A1, A2, s)
+  M13 <- gyromidpoint(A1, A3, s)
+  M23 <- gyromidpoint(A2, A3, s)
+  list(
+    list(A1, M12, M13),
+    list(A2, M23, M12),
+    list(A3, M13, M23),
+    list(M12, M13, M23)
+  )
+}
+
+#' @title Gyrotriangle in 3D space
+#' @description 3D gyrotriangle as a mesh.
+#'
+#' @param A,B,C three 3D points
+#' @param s positive number, the curvature (the smaller, the more curved)
+#' @param iterations the gyrotriangle is constructed by iterated subdivisions,
+#'   this argument is the number of iterations
+#'
+#' @return A \code{\link[rgl]{mesh3d}} object.
+#' @export
+#'
+#' @importFrom purrr flatten
+#' @importFrom rgl tmesh3d
+#' @importFrom Rvcg vcgClean
+#'
+#' @examples library(gyro)
+#' library(rgl)
+#' A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
+#' ABC <- gyrotriangle(A, B, C, s = 0.3)
+#' view3d(30, 30, zoom = 0.75)
+#' shade3d(ABC, color = "navy", specular = "cyan")
+gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
+  subd <- gyrosubdiv(A, B, C, s)
+  for(i in seq_len(iterations-1)){
+    subd <- flatten(lapply(subd, function(triplet){
+      gyrosubdiv(triplet[[1]], triplet[[2]], triplet[[3]], s)
+    }))
+  }
+  vertices <-
+    do.call(cbind,
+            lapply(subd, function(triplet) do.call(cbind, triplet)))
+  indices <- matrix(1L:ncol(vertices), nrow = 3L)
+  mesh <- tmesh3d(
+    vertices = vertices,
+    indices = indices
+  )
+  vcgClean(mesh, sel = c(0, 7), silent = TRUE)
+}

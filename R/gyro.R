@@ -193,3 +193,18 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
   mesh
 }
 
+#' @importFrom cxhull cxhull VerticesXYZ EdgesXYZ TrianglesXYZ
+#' @noRd
+.cxhull <- function(points){
+  hull <- cxhull(points, triangulate = TRUE)
+  Vertices <- VerticesXYZ(hull)
+  Edges <- EdgesXYZ(hull)
+  Edges <- Edges[Edges[, "border"] == 1, c("x", "y", "z")]
+  nedges <- nrow(Edges) %/% 2L
+  Edges <- lapply(split(as.data.frame(Edges), gl(nedges, 2L)), as.matrix)
+  Triangles <- TrianglesXYZ(hull)
+  ntriangles <- length(hull[["facets"]])
+  Triangles <-
+    lapply(split(as.data.frame(Triangles), gl(ntriangles, 3L)), as.matrix)
+  return(list(vertices = Vertices, edges = Edges, triangles = Triangles))
+}

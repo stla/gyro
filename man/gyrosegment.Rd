@@ -30,4 +30,14 @@ AB <- gyrosegment(A, B, s = 0.2)
 lines(AB) # this is a piece of an hyperboloid
 text(t(A), expression(italic(A)), pos = 1)
 text(t(B), expression(italic(B)), pos = 3)
+
+# a 3D hyperbolic triangle
+library(rgl)
+A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
+s <- 0.3
+AB <- gyrosegment(A, B, s)
+AC <- gyrosegment(A, C, s)
+BC <- gyrosegment(B, C, s)
+view3d(30, 30, zoom = 0.75)
+lines3d(AB, lwd = 3); lines3d(AC, lwd = 3); lines3d(BC, lwd = 3)
 }

@@ -49,6 +49,16 @@ gyromidpoint <- function(A, B, s){
 #' lines(AB) # this is a piece of an hyperboloid
 #' text(t(A), expression(italic(A)), pos = 1)
 #' text(t(B), expression(italic(B)), pos = 3)
+#'
+#' # a 3D hyperbolic triangle
+#' library(rgl)
+#' A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
+#' s <- 0.3
+#' AB <- gyrosegment(A, B, s)
+#' AC <- gyrosegment(A, C, s)
+#' BC <- gyrosegment(B, C, s)
+#' view3d(30, 30, zoom = 0.75)
+#' lines3d(AB, lwd = 3); lines3d(AC, lwd = 3); lines3d(BC, lwd = 3)
 gyrosegment <- function(A, B, s = 1, n = 100){
   stopifnot(isPoint(A))
   stopifnot(isPoint(B))
@@ -76,6 +86,20 @@ gyrosegment <- function(A, B, s = 1, n = 100){
 #' A <- c(1, 2, 0); B <- c(1, 1, 0)
 #' tube <- gyrotube(A, B, s = 0.2, radius = 0.02)
 #' shade3d(tube, color = "orangered")
+#'
+#' # a 3D hyperbolic triangle ####
+#' library(rgl)
+#' A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
+#' s <- 0.3
+#' r <- 0.03
+#' AB <- gyrotube(A, B, s, radius = r)
+#' AC <- gyrotube(A, C, s, radius = r)
+#' BC <- gyrotube(B, C, s, radius = r)
+#' view3d(30, 30, zoom = 0.75)
+#' shade3d(AB, color = "gold")
+#' shade3d(AC, color = "gold")
+#' shade3d(BC, color = "gold")
+#' spheres3d(rbind(A, B, C), radius = 0.04, color = "gold")
 gyrotube <- function(A, B, s = 1, n = 100, radius, sides = 90, caps = FALSE){
   stopifnot(isPositiveNumber(s))
   stopifnot(is3dPoint(A))

@@ -208,14 +208,15 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
   return(list(vertices = Vertices, edges = Edges, triangles = Triangles))
 }
 
-#' Title
+#' @title Hyperbolic convex hull
+#' @description Plot the hyperbolic convex hull of a set of 3D points.
 #'
-#' @param points
-#' @param s
-#' @param iterations
-#' @param n
+#' @param points matrix of 3D points, one point per row
+#' @param s curvature parameter
+#' @param iterations argument passed to \code{\link{gyrotriangle}}
+#' @param n argument passed to \code{\link{gyrotube}}
 #'
-#' @return
+#' @return No value, called for plotting.
 #' @export
 #'
 #' @importFrom rgl shade3d spheres3d

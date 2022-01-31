@@ -2,18 +2,24 @@
 % Please edit documentation in R/gyro.R
 \name{plotGyrohull3d}
 \alias{plotGyrohull3d}
-\title{Title}
+\title{Hyperbolic convex hull}
 \usage{
 plotGyrohull3d(points, s = 1, iterations = 5, n = 100)
 }
 \arguments{
-\item{n}{}
+\item{points}{matrix of 3D points, one point per row}
+
+\item{s}{curvature parameter}
+
+\item{iterations}{argument passed to \code{\link{gyrotriangle}}}
+
+\item{n}{argument passed to \code{\link{gyrotube}}}
 }
 \value{
-
+No value, called for plotting.
 }
 \description{
-Title
+Plot the hyperbolic convex hull of a set of 3D points.
 }
 \examples{
 library(gyro)

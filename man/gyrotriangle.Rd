@@ -27,4 +27,31 @@ A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
 ABC <- gyrotriangle(A, B, C, s = 0.3)
 view3d(30, 30, zoom = 0.75)
 shade3d(ABC, color = "navy", specular = "cyan")
+
+# hyperbolic icosahedron ####
+library(rgl)
+library(Rvcg) # to get the edges with the `vcgGetEdge` function
+icosahedron <- icosahedron3d() # mesh with 12 vertices, 20 triangles
+vertices <- t(icosahedron$vb[-4, ])
+triangles <- t(icosahedron$it)
+edges <- as.matrix(vcgGetEdge(icosahedron)[, c("vert1", "vert2")])
+s <- 0.3
+open3d(windowRect = c(50, 50, 562, 562))
+view3d(zoom = 0.75)
+for(i in 1:nrow(triangles)){
+  triangle <- triangles[i, ]
+  A <- vertices[triangle[1], ]
+  B <- vertices[triangle[2], ]
+  C <- vertices[triangle[3], ]
+  gtriangle <- gyrotriangle(A, B, C, s)
+  shade3d(gtriangle, color = "midnightblue")
+}
+for(i in 1:nrow(edges)){
+  edge <- edges[i, ]
+  A <- vertices[edge[1], ]
+  B <- vertices[edge[2], ]
+  gtube <- gyrotube(A, B, s, radius = 0.03)
+  shade3d(gtube, color = "lemonchiffon")
+}
+spheres3d(vertices, radius = 0.05, color = "lemonchiffon")
 }

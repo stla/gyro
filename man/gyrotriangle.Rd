@@ -12,7 +12,8 @@ gyrotriangle(
   iterations = 5,
   palette = NULL,
   bias = 1,
-  interpolate = "linear"
+  interpolate = "linear",
+  g = identity
 )
 }
 \arguments{
@@ -28,6 +29,10 @@ if you don't want to use a color palette}
 
 \item{bias, interpolate}{if \code{palette} is not \code{NULL}, these
 arguments are passed to \code{\link[grDevices]{colorRamp}}}
+
+\item{g}{a function from [0,1] to [0,1]; if \code{palette} is not
+\code{NULL}, this function is applied to the scalars defining the colors
+(the normalized gyrodistances to the gyrocentroid of the gyrotriangle)}
 }
 \value{
 A \code{\link[rgl]{mesh3d}} object.

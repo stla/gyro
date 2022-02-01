@@ -165,6 +165,9 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #'   if you don't want to use a color palette
 #' @param bias,interpolate if \code{palette} is not \code{NULL}, these
 #'   arguments are passed to \code{\link[grDevices]{colorRamp}}
+#' @param g a function from [0,1] to [0,1]; if \code{palette} is not
+#'   \code{NULL}, this function is applied to the scalars defining the colors
+#'   (the normalized gyrodistances to the gyrocentroid of the gyrotriangle)
 #'
 #' @return A \code{\link[rgl]{mesh3d}} object.
 #' @export
@@ -220,7 +223,7 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #' spheres3d(vertices, radius = 0.05, color = "lemonchiffon")
 gyrotriangle <- function(
   A, B, C, s = 1, iterations = 5,
-  palette = NULL, bias = 1, interpolate = "linear"
+  palette = NULL, bias = 1, interpolate = "linear", g = identity
 ){
   subd <- gyrosubdiv(A, B, C, s)
   for(i in seq_len(iterations-1)){
@@ -245,7 +248,7 @@ gyrotriangle <- function(
       dotprod(gyroadd(-gyroG, v, s))
     }))
     dists <- (dists - min(dists))/diff(range(dists))
-    RGB <- fpalette(dists)
+    RGB <- fpalette(g(dists))
     colors <- rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)
     mesh[["material"]] = list(color = colors)
   }

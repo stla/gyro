@@ -1,4 +1,34 @@
+gammaF <- function(A, s){
+  1 / sqrt(1 - dotprod(A)/(s*s))
+}
+
+# gyromidpointE <- function(A, B, s=1){
+#   gA <- gamm(A, s=s); gB <- gamm(B, s=s)
+#   (gA*A + gB*B) / (gA+gB)
+# }
+
+gyrocentroidE <- function(A, B, C, s){
+  gA <- gammaF(A, s); gB <- gammaF(B, s); gC <- gammaF(C, s)
+  (gA*A + gB*B + gC*C) / (gA + gB + gC)
+}
+
+PhiEU <- function(A, s){
+  gammaF(A, s) * A
+}
+
 betaF <- function(A, s) 1 / sqrt(1 + dotprod(A)/(s*s))
+
+PhiUE <- function(A, s){
+  betaF(A, s) * A
+}
+
+# gyromidpointU <- function(A, B, s=1){
+#   PhiEU(gyromidpointE(PhiUE(A,s=s),PhiUE(B,s=s),s=s),s=s)
+# }
+
+gyrocentroid <- function(A, B, C, s){
+  PhiEU(gyrocentroidE(PhiUE(A, s), PhiUE(B, s), PhiUE(C, s), s), s)
+}
 
 gyroadd <- function(A, B, s){
   betaA <- betaF(A, s)
@@ -127,10 +157,14 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #' @title Gyrotriangle in 3D space
 #' @description 3D gyrotriangle as a mesh.
 #'
-#' @param A,B,C three 3D points
+#' @param A,B,C three distinct 3D points
 #' @param s positive number, the curvature (the smaller, the more curved)
 #' @param iterations the gyrotriangle is constructed by iterated subdivisions,
 #'   this argument is the number of iterations
+#' @param palette a vector of colors to decorate the triangle, or \code{NULL}
+#'   if you don't want to use a color palette
+#' @param bias,interpolate if \code{palette} is not \code{NULL}, these
+#'   arguments are passed to \code{\link[grDevices]{colorRamp}}
 #'
 #' @return A \code{\link[rgl]{mesh3d}} object.
 #' @export
@@ -138,6 +172,7 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #' @importFrom purrr flatten
 #' @importFrom rgl tmesh3d
 #' @importFrom Rvcg vcgClean
+#' @importFrom grDevices colorRamp rgb
 #'
 #' @examples library(gyro)
 #' library(rgl)
@@ -145,6 +180,14 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #' ABC <- gyrotriangle(A, B, C, s = 0.3)
 #' view3d(30, 30, zoom = 0.75)
 #' shade3d(ABC, color = "navy", specular = "cyan")
+#'
+#' # using a color palette
+#' library(trekcolors)
+#' ABC <- gyrotriangle(
+#'   A, B, C, s = 0.5,
+#'   palette = trek_pal("klingon"), bias = 1.5, interpolate = "spline"
+#' )
+#' shade3d(ABC)
 #'
 #' # hyperbolic icosahedron ####
 #' library(rgl)
@@ -172,7 +215,10 @@ gyrosubdiv <- function(A1, A2, A3, s){
 #'   shade3d(gtube, color = "lemonchiffon")
 #' }
 #' spheres3d(vertices, radius = 0.05, color = "lemonchiffon")
-gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
+gyrotriangle <- function(
+  A, B, C, s = 1, iterations = 5,
+  palette = NULL, bias = 1, interpolate = "linear"
+){
   subd <- gyrosubdiv(A, B, C, s)
   for(i in seq_len(iterations-1)){
     subd <- flatten(lapply(subd, function(triplet){
@@ -189,6 +235,17 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
   mesh <- vcgClean(mesh0, sel = c(0, 7), silent = TRUE)
   mesh[["remvert"]] <- NULL
   mesh[["remface"]] <- NULL
+  if(!is.null(palette)){
+    fpalette <- colorRamp(palette, bias = bias, interpolate = interpolate)
+    gyroG <- gyrocentroid(A, B, C, s)
+    dists <- apply(mesh$vb[-4L, ], 2L, function(v){
+      dotprod(gyroadd(-gyroG, v, s))
+    })
+    dists <- (dists - min(dists))/diff(range(dists))
+    RGB <- fpalette(dists)
+    colors <- rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)
+    mesh[["material"]] = list(color = colors)
+  }
   mesh
 }
 

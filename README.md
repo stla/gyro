@@ -15,3 +15,5 @@
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/triakisIcosahedron.gif)
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/icosahedron_dynamic_colors.gif)
+
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/pentagrammic_prism.gif)

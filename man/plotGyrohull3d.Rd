@@ -4,7 +4,19 @@
 \alias{plotGyrohull3d}
 \title{Hyperbolic convex hull}
 \usage{
-plotGyrohull3d(points, s = 1, iterations = 5, n = 100)
+plotGyrohull3d(
+  points,
+  s = 1,
+  iterations = 5,
+  n = 100,
+  edgesAsTubes = TRUE,
+  verticesAsSpheres = edgesAsTubes,
+  edgesColor = "yellow",
+  spheresColor = edgesColor,
+  tubesRadius = 0.03,
+  spheresRadius = 0.05,
+  facesColor = "navy"
+)
 }
 \arguments{
 \item{points}{matrix of 3D points, one point per row}
@@ -13,7 +25,25 @@ plotGyrohull3d(points, s = 1, iterations = 5, n = 100)
 
 \item{iterations}{argument passed to \code{\link{gyrotriangle}}}
 
-\item{n}{argument passed to \code{\link{gyrotube}}}
+\item{n}{argument passed to \code{\link{gyrotube}} or
+\code{\link{gyrosegment}}, the number of points for each edge}
+
+\item{edgesAsTubes}{Boolean, whether to represent tubular edges}
+
+\item{verticesAsSpheres}{Boolean, whether to represent the vertices as
+spheres}
+
+\item{edgesColor}{a color for the edges}
+
+\item{spheresColor}{a color for the spheres, if
+\code{verticesAsSpheres = TRUE}}
+
+\item{tubesRadius}{radius of the tubes, if \code{edgesAsTubes = TRUE}}
+
+\item{spheresRadius}{radius of the spheres,
+if \code{verticesAsSpheres = TRUE}}
+
+\item{facesColor}{a color for the faces}
 }
 \value{
 No value, called for plotting.

@@ -214,7 +214,18 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
 #' @param points matrix of 3D points, one point per row
 #' @param s curvature parameter
 #' @param iterations argument passed to \code{\link{gyrotriangle}}
-#' @param n argument passed to \code{\link{gyrotube}}
+#' @param n argument passed to \code{\link{gyrotube}} or
+#'   \code{\link{gyrosegment}}, the number of points for each edge
+#' @param edgesAsTubes Boolean, whether to represent tubular edges
+#' @param verticesAsSpheres Boolean, whether to represent the vertices as
+#'   spheres
+#' @param edgesColor a color for the edges
+#' @param spheresColor a color for the spheres, if
+#'   \code{verticesAsSpheres = TRUE}
+#' @param tubesRadius radius of the tubes, if \code{edgesAsTubes = TRUE}
+#' @param spheresRadius radius of the spheres,
+#'   if \code{verticesAsSpheres = TRUE}
+#' @param facesColor a color for the faces
 #'
 #' @return No value, called for plotting.
 #' @export
@@ -321,8 +332,13 @@ gyrotriangle <- function(A, B, C, s = 1, iterations = 5){
 #' view3d(zoom = 0.65)
 #' plotGyrohull3d(vertices, s)
 plotGyrohull3d <- function(
-  points, s = 1, iterations = 5, n = 100
+  points, s = 1, iterations = 5, n = 100, edgesAsTubes = TRUE,
+  verticesAsSpheres = edgesAsTubes, edgesColor = "yellow",
+  spheresColor = edgesColor, tubesRadius = 0.03, spheresRadius = 0.05,
+  facesColor = "navy"
 ){
+  stopifnot(isBoolean(edgesAsTubes))
+  stopifnot(isBoolean(verticesAsSpheres))
   hull <- .cxhull(points)
   Triangles <- hull[["triangles"]]
   Edges <- hull[["edges"]]
@@ -337,15 +353,25 @@ plotGyrohull3d <- function(
     )
   }
   mesh <- vcgClean(mergeMeshes(Gtriangles), sel = 0, silent = TRUE)
-  shade3d(mesh, color = "navy")
-  for(edge in Edges){
-    gtube <- gyrotube(
-      edge[1L, ], edge[2L, ],
-      s = s, n = n, radius = 0.03
-    )
-    shade3d(gtube, color = "yellow")
+  shade3d(mesh, color = facesColor)
+  if(edgesAsTubes){
+    for(edge in Edges){
+      gtube <- gyrotube(
+        edge[1L, ], edge[2L, ], s = s, n = n, radius = tubesRadius
+      )
+      shade3d(gtube, color = edgesColor)
+    }
+  }else{
+    for(edge in Edges){
+      gsegment <- gyrosegment(
+        edge[1L, ], edge[2L, ], s = s, n = n
+      )
+      lines3d(gsegment, color = edgesColor, lwd = 2)
+    }
   }
-  spheres3d(Vertices, radius = 0.05, color = "yellow")
+  if(verticesAsSpheres){
+    spheres3d(Vertices, radius = spheresRadius, color = spheresColor)
+  }
   invisible(NULL)
 }
 

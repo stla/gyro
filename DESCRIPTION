@@ -8,5 +8,6 @@ Description: Hyperbolic geometry in the hyperboloid model, with emphasis on the 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0)
+Imports: rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices
+Suggests: trekcolors
 RoxygenNote: 7.1.2

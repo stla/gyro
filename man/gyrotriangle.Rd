@@ -4,15 +4,30 @@
 \alias{gyrotriangle}
 \title{Gyrotriangle in 3D space}
 \usage{
-gyrotriangle(A, B, C, s = 1, iterations = 5)
+gyrotriangle(
+  A,
+  B,
+  C,
+  s = 1,
+  iterations = 5,
+  palette = NULL,
+  bias = 1,
+  interpolate = "linear"
+)
 }
 \arguments{
-\item{A, B, C}{three 3D points}
+\item{A, B, C}{three distinct 3D points}
 
 \item{s}{positive number, the curvature (the smaller, the more curved)}
 
 \item{iterations}{the gyrotriangle is constructed by iterated subdivisions,
 this argument is the number of iterations}
+
+\item{palette}{a vector of colors to decorate the triangle, or \code{NULL}
+if you don't want to use a color palette}
+
+\item{bias, interpolate}{if \code{palette} is not \code{NULL}, these
+arguments are passed to \code{\link[grDevices]{colorRamp}}}
 }
 \value{
 A \code{\link[rgl]{mesh3d}} object.
@@ -27,6 +42,14 @@ A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
 ABC <- gyrotriangle(A, B, C, s = 0.3)
 view3d(30, 30, zoom = 0.75)
 shade3d(ABC, color = "navy", specular = "cyan")
+
+# using a color palette
+library(trekcolors)
+ABC <- gyrotriangle(
+  A, B, C, s = 0.5,
+  palette = trek_pal("klingon"), bias = 1.5, interpolate = "spline"
+)
+shade3d(ABC)
 
 # hyperbolic icosahedron ####
 library(rgl)

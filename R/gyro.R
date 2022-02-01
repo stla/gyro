@@ -241,9 +241,9 @@ gyrotriangle <- function(
   if(!is.null(palette)){
     fpalette <- colorRamp(palette, bias = bias, interpolate = interpolate)
     gyroG <- gyrocentroid(A, B, C, s)
-    dists <- apply(mesh$vb[-4L, ], 2L, function(v){
+    dists <- sqrt(apply(mesh$vb[-4L, ], 2L, function(v){
       dotprod(gyroadd(-gyroG, v, s))
-    })
+    }))
     dists <- (dists - min(dists))/diff(range(dists))
     RGB <- fpalette(dists)
     colors <- rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)

@@ -41,12 +41,33 @@ gyroscalar <- function(r, A, s){
   sinh(r*asinh(h)) * A / h
 }
 
-gyroABt <- function(A, B, t, s){
+.gyroABt <- function(A, B, t, s){
   gyroadd(A, gyroscalar(t, gyroadd(-A, B, s), s), s)
 }
 
+#' @title Point on a gyroline
+#' @description Point of coordinate \code{t} on the gyroline passing through
+#'   two given points \code{A} and \code{B}. This is \code{A} for \code{t=0}
+#'   and this is \code{B} for \code{t=1}. For \code{t=1/2} this is the
+#'   gyromidpoint of the gyrosegment joining \code{A} and \code{B}.
+#'
+#' @param A,B two distinct points
+#' @param t a number
+#' @param s positive number, the parameter defining the hyperbolic curvature
+#'
+#' @return A point.
+#' @export
+gyroABt <- function(A, B, t, s){
+  stopifnot(isPositiveNumber(s))
+  stopifnot(isPoint(A))
+  stopifnot(isPoint(B))
+  stopifnot(isNumber(t))
+  stopifnot(areDistinct(A, B))
+  .gyroABt(A, B, t, s)
+}
+
 gyromidpoint <- function(A, B, s){
-  gyroABt(A, B, 0.5, s)
+  .gyroABt(A, B, 0.5, s)
 }
 
 .gyrosegment <- function(A, B, s, n){

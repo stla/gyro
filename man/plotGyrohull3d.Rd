@@ -159,4 +159,15 @@ spheres3d(vertices, radius = 0.09, color = "deeppink")
 next3d()
 view3d(zoom = 0.65)
 plotGyrohull3d(vertices, s)
+
+# an example of color palette ####
+library(trekcolors)
+library(uniformly)
+set.seed(666)
+points <- runif_on_sphere(50, d = 3)
+open3d(windowRect = c(50, 50, 562, 562))
+plotGyrohull3d(
+  points, edgesColor = "brown",
+  facesColor = trek_pal("lcars_series"), g = function(u) 1-u^2
+)
 }

@@ -429,7 +429,7 @@ plotGyrohull3d <- function(
   Vertices <- hull[["vertices"]]
   ntriangles <- length(Triangles)
   Gtriangles <- vector("list", ntriangles)
-  for(i in 1:ntriangles){
+  for(i in 1L:ntriangles){
     triangle <- Triangles[[i]]
     Gtriangles[[i]] <- gyrotriangle(
       triangle[1L, ], triangle[2L, ], triangle[3L, ],

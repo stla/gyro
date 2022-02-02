@@ -33,7 +33,7 @@ centers <- t(vapply(indices, function(i) h$facets[[i]]$center, numeric(3)))
 
 # mesh
 nindices <- length(indices)
-faces <- matrix(integer(3*4*nindices), ncol = 3, nrow = 4*nindices)
+faces <- matrix(integer(3L*4L*nindices), ncol = 3L, nrow = 4L*nindices)
 for(j in 1L:nindices){
   v1 <- vertices[1L, j]
   v2 <- vertices[2L, j]

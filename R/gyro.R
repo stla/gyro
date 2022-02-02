@@ -502,7 +502,8 @@ gyrodemos <- function(){
   tmpfiles <- file.path(tmpdir, files)
   invisible(file.copy(file.path(folder, files), tmpfiles))
   if(isAvailable(version_needed = "0.99.719")){
-    sapply(tmpfiles, navigateToFile)
+    invisible(sapply(tmpfiles, navigateToFile))
+    message(sprintf("Opened files: %s.", toString(files)))
   }else{
     line <- sprintf(
       'wd <- setwd("%s")\n',

@@ -309,7 +309,13 @@ gyrotriangle <- function(
 #' @param tubesRadius radius of the tubes, if \code{edgesAsTubes = TRUE}
 #' @param spheresRadius radius of the spheres,
 #'   if \code{verticesAsSpheres = TRUE}
-#' @param facesColor a color for the faces
+#' @param facesColor this argument sets the color of the faces; it can be
+#'   either a single color or a color palette, i.e. a vector of colors; if it
+#'   is a color palette, it will be passed to the argument \code{palette} of
+#'   \code{\link{gyrotriangle}}
+#' @param bias,interpolate,g these arguments are passed to
+#'   \code{\link{gyrotriangle}} in the case when \code{facesColor} is a color
+#'   palette
 #'
 #' @return No value, called for plotting.
 #' @export
@@ -419,7 +425,7 @@ plotGyrohull3d <- function(
   points, s = 1, iterations = 5, n = 100, edgesAsTubes = TRUE,
   verticesAsSpheres = edgesAsTubes, edgesColor = "yellow",
   spheresColor = edgesColor, tubesRadius = 0.03, spheresRadius = 0.05,
-  facesColor = "navy"
+  facesColor = "navy", bias = 1, interpolate = "linear", g = identity
 ){
   stopifnot(isBoolean(edgesAsTubes))
   stopifnot(isBoolean(verticesAsSpheres))
@@ -429,15 +435,21 @@ plotGyrohull3d <- function(
   Vertices <- hull[["vertices"]]
   ntriangles <- length(Triangles)
   Gtriangles <- vector("list", ntriangles)
+  palette <- if(length(facesColor) > 1L) facesColor
   for(i in 1L:ntriangles){
     triangle <- Triangles[[i]]
     Gtriangles[[i]] <- gyrotriangle(
       triangle[1L, ], triangle[2L, ], triangle[3L, ],
-      s = s, iterations = iterations
+      s = s, iterations = iterations, palette = palette,
+      bias = bias, interpolate = interpolate, g = g
     )
   }
   mesh <- vcgClean(mergeMeshes(Gtriangles), sel = 0, silent = TRUE)
-  shade3d(mesh, color = facesColor)
+  if(is.null(palette)){
+    shade3d(mesh, color = facesColor)
+  }else{
+    shade3d(mesh)
+  }
   if(edgesAsTubes){
     for(edge in Edges){
       gtube <- gyrotube(

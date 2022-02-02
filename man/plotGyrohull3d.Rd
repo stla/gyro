@@ -15,7 +15,10 @@ plotGyrohull3d(
   spheresColor = edgesColor,
   tubesRadius = 0.03,
   spheresRadius = 0.05,
-  facesColor = "navy"
+  facesColor = "navy",
+  bias = 1,
+  interpolate = "linear",
+  g = identity
 )
 }
 \arguments{
@@ -43,7 +46,14 @@ spheres}
 \item{spheresRadius}{radius of the spheres,
 if \code{verticesAsSpheres = TRUE}}
 
-\item{facesColor}{a color for the faces}
+\item{facesColor}{this argument sets the color of the faces; it can be
+either a single color or a color palette, i.e. a vector of colors; if it
+is a color palette, it will be passed to the argument \code{palette} of
+\code{\link{gyrotriangle}}}
+
+\item{bias, interpolate, g}{these arguments are passed to
+\code{\link{gyrotriangle}} in the case when \code{facesColor} is a color
+palette}
 }
 \value{
 No value, called for plotting.

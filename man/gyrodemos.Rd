@@ -16,3 +16,18 @@ No value. The function firstly copies the demo files in a
 Some examples of hyperbolic polyhedra realized with the 'gyro'
   package.
 }
+\note{
+The \emph{BarthLike} file has this name because the figure it
+  generates looks like the Barth sextic (drawing by Patrice Jeener):
+
+\if{html}{
+
+  \out{<div style="text-align: center">}\figure{SextiqueDeBarth.png}{options: style="max-width:75\%;"}\out{</div>}
+
+}
+\if{latex}{
+
+  \out{\begin{center}}\figure{SextiqueDeBarth.png}\out{\end{center}}
+
+}
+}

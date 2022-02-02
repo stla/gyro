@@ -490,6 +490,20 @@ plotGyrohull3d <- function(
 #'   temporary directory. If you use RStudio, the function opens these files.
 #'   Otherwise it prints a message giving the instructions to access to these
 #'   files.
+#'
+#' @note The \emph{BarthLike} file has this name because the figure it
+#'   generates looks like the Barth sextic (drawing by Patrice Jeener):
+#'
+#' \if{html}{
+#'
+#'   \out{<div style="text-align: center">}\figure{SextiqueDeBarth.png}{options: style="max-width:75\%;"}\out{</div>}
+#'
+#' }
+#' \if{latex}{
+#'
+#'   \out{\begin{center}}\figure{SextiqueDeBarth.png}\out{\end{center}}
+#'
+#' }
 #' @export
 #'
 #' @importFrom rstudioapi isAvailable navigateToFile

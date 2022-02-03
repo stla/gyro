@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^\.github$
 ^inst/images$
+^cran-comments\.md$

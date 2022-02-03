@@ -53,6 +53,6 @@ website. From the faces you can derive the edges. See `gyrodemos()` for some
 examples. The [eusebeia](http://eusebeia.dyndns.org/4d/index) website is 
 another resource to find the Cartesian coordinates of the vertices of some 
 polyhedra. Finally you can also use the R package 
-[Rpolyhedra](https://cran.r-project.org/web/packages/Rpolyhedra/index.html). 
+[Rpolyhedra](https://CRAN.R-project.org/package=Rpolyhedra). 
 It is archived on CRAN, but you can install it from the `tar.gz` archive.
 

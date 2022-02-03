@@ -341,9 +341,9 @@ gyrotriangle <- function(
 #'   c(2, 0, 0),
 #'   c(-2, 0, 0)
 #' )
-#' open3d(windowRect = c(50, 50, 562, 562))
+#' \donttest{open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(zoom = 0.7)
-#' plotGyrohull3d(points, s = 0.4)
+#' plotGyrohull3d(points, s = 0.4)}
 #'
 #' # a non-convex polyhedron with triangular faces ####
 #' vertices <- rbind(
@@ -397,7 +397,7 @@ gyrotriangle <- function(
 #' edges <- do.call(rbind, edges0)
 #' edges <- edges[!duplicated(edges), ]
 #' s <- 2
-#' library(rgl)
+#' \donttest{library(rgl)
 #' open3d(windowRect = c(50, 50, 1074, 562))
 #' mfrow3d(1, 2)
 #' view3d(zoom = 0.65)
@@ -420,18 +420,18 @@ gyrotriangle <- function(
 #' # now plot the hyperbolic convex hull
 #' next3d()
 #' view3d(zoom = 0.65)
-#' plotGyrohull3d(vertices, s)
+#' plotGyrohull3d(vertices, s)}
 #'
 #' # an example of color palette ####
 #' library(trekcolors)
 #' library(uniformly)
 #' set.seed(666)
 #' points <- runif_on_sphere(50, d = 3)
-#' open3d(windowRect = c(50, 50, 562, 562))
+#' \donttest{open3d(windowRect = c(50, 50, 562, 562))
 #' plotGyrohull3d(
 #'   points, edgesColor = "brown",
 #'   facesColor = trek_pal("lcars_series"), g = function(u) 1-u^2
-#' )
+#' )}
 plotGyrohull3d <- function(
   points, s = 1, iterations = 5, n = 100, edgesAsTubes = TRUE,
   verticesAsSpheres = edgesAsTubes, edgesColor = "yellow",
@@ -560,8 +560,8 @@ gyrodemos <- function(){
 #' )
 #' vs2 <- rbind(vs1, vs1[, c(2, 3, 1)], vs1[, c(3, 1, 2)]) # even permutations
 #' vs <- changesOfSign(vs2)
-#' open3d(windowRect = c(50, 50, 562, 562), zoom = 0.65)
-#' plotGyrohull3d(vs)
+#' \donttest{open3d(windowRect = c(50, 50, 562, 562), zoom = 0.65)
+#' plotGyrohull3d(vs)}
 changesOfSign <- function(M, changes = "all"){
   if(!is.matrix(M)) M <- rbind(M)
   if(identical(changes, "all")) changes <- 1L:ncol(M)

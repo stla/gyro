@@ -32,6 +32,6 @@ vs1 <- rbind(
 )
 vs2 <- rbind(vs1, vs1[, c(2, 3, 1)], vs1[, c(3, 1, 2)]) # even permutations
 vs <- changesOfSign(vs2)
-open3d(windowRect = c(50, 50, 562, 562), zoom = 0.65)
-plotGyrohull3d(vs)
+\donttest{open3d(windowRect = c(50, 50, 562, 562), zoom = 0.65)
+plotGyrohull3d(vs)}
 }

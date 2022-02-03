@@ -3,3 +3,4 @@
 ^\.github$
 ^inst/images$
 ^cran-comments\.md$
+^inst/trash$

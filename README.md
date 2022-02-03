@@ -21,3 +21,5 @@
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/triakisOctahedron.gif)
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/pyramids.gif)
+
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/GreatDeltoidalIcositetrahedron.gif)

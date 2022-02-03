@@ -45,9 +45,9 @@ library(gyro)
 library(rgl)
 A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
 ABC <- gyrotriangle(A, B, C, s = 0.3)
-open3d(windowRect = c(50, 50, 562, 562))
+\donttest{open3d(windowRect = c(50, 50, 562, 562))
 view3d(30, 30, zoom = 0.75)
-shade3d(ABC, color = "navy", specular = "cyan")
+shade3d(ABC, color = "navy", specular = "cyan")}
 
 # using a color palette ####
 library(trekcolors)
@@ -55,9 +55,9 @@ ABC <- gyrotriangle(
   A, B, C, s = 0.5,
   palette = trek_pal("klingon"), bias = 1.5, interpolate = "spline"
 )
-open3d(windowRect = c(50, 50, 562, 562))
+\donttest{open3d(windowRect = c(50, 50, 562, 562))
 view3d(zoom = 0.75)
-shade3d(ABC)
+shade3d(ABC)}
 
 # hyperbolic icosahedron ####
 library(rgl)
@@ -67,7 +67,7 @@ vertices <- t(icosahedron$vb[-4, ])
 triangles <- t(icosahedron$it)
 edges <- as.matrix(vcgGetEdge(icosahedron)[, c("vert1", "vert2")])
 s <- 0.3
-open3d(windowRect = c(50, 50, 562, 562))
+\donttest{open3d(windowRect = c(50, 50, 562, 562))
 view3d(zoom = 0.75)
 for(i in 1:nrow(triangles)){
   triangle <- triangles[i, ]
@@ -84,5 +84,5 @@ for(i in 1:nrow(edges)){
   gtube <- gyrotube(A, B, s, radius = 0.03)
   shade3d(gtube, color = "lemonchiffon")
 }
-spheres3d(vertices, radius = 0.05, color = "lemonchiffon")
+spheres3d(vertices, radius = 0.05, color = "lemonchiffon")}
 }

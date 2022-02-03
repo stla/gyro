@@ -320,7 +320,7 @@ gyrotriangle <- function(
 #' @return No value, called for plotting.
 #' @export
 #'
-#' @importFrom rgl shade3d spheres3d
+#' @importFrom rgl shade3d spheres3d lines3d
 #' @importFrom Morpho mergeMeshes
 #' @importFrom Rvcg vcgClean
 #'

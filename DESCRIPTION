@@ -8,7 +8,12 @@ Description: Hyperbolic geometry in the hyperboloid model, with emphasis on the 
 License: GPL-3
 Encoding: UTF-8
 Imports: rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices, rstudioapi, clipr
-Suggests: trekcolors, uniformly
+Suggests: 
+    rmarkdown,
+    knitr,
+    trekcolors,
+    uniformly
 URL: https://github.com/stla/gyro
 BugReports: https://github.com/stla/gyro/issues
 RoxygenNote: 7.1.2
+VignetteBuilder: knitr

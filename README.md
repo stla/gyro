@@ -27,3 +27,5 @@
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/SmallIcosihemidodecahedron.gif)
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/gircope.gif)
+
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/truncatedGreatDodecahedron.gif)

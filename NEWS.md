@@ -1,6 +1,6 @@
 # gyro 0.1.0.9000 (2022-02-26)
 
-Gircope example.
+New examples: gircope and truncated great dodecahedron.
 
 
 # gyro 0.1.0 (2022-02-03)

@@ -56,7 +56,7 @@ s <- 0.5
 open3d(windowRect = c(50, 50, 562, 562), zoom = 0.8)
 bg3d(rgb(54, 57, 64, maxColorValue = 255))
 for(i in 1L:nrow(squares)){
-  square <- squares[i,]
+  square <- squares[i, ]
   mesh1 <- gyrotriangle(
     pvertices[square[1L], ], pvertices[square[2L], ], pvertices[square[3L], ],
     s = s

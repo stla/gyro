@@ -31,3 +31,5 @@
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/truncatedGreatDodecahedron.gif)
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/CastellatedRhombicosidodecahedralPrism.gif)
+
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/rhombicTriacontahedron.gif)

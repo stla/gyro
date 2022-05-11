@@ -79,7 +79,7 @@ sommets <- function(n, p){
 #' @importFrom graphics polypath
 #' @noRd
 pavage <- function(
-  triangle, symetrie, niveau, Centroids, i, n, p, Sommets, colors
+  triangle, symetrie, niveau, Centroids, i, n, Sommets, colors
 ){
   if(dup <- anyDuplicated(round(Centroids, 6L))){
     Centroids <- Centroids[-dup, ]
@@ -106,7 +106,7 @@ pavage <- function(
             newtriangle[[1L]], newtriangle[[2L]], newtriangle[[3L]], s = 1
           )
         )
-        pavage(newtriangle, k, niveau-1L, Centroids, -i, n, p, Sommets, colors)
+        pavage(newtriangle, k, niveau-1L, Centroids, -i, n, Sommets, colors)
       }
     }
   }
@@ -128,6 +128,10 @@ pavage <- function(
 #'
 #' @importFrom graphics par
 #' @importFrom plotrix draw.circle
+#'
+#' @note This is slow. The higher value of \code{n}, the slower. And of course
+#'   increasing \code{depth} slows down the rendering. The value of \code{p}
+#'   has no influence on the speed.
 #'
 #' @examples
 #' library(gyro)
@@ -153,12 +157,12 @@ tiling <- function(
     ip1 <- ifelse(i == n, 1L, i+1L)
     pavage(
       list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, ip1], 1)),
-      0L, depth, Centroids, 1L, n, p, Sommets, colors
+      0L, depth, Centroids, 1L, n, Sommets, colors
     )
     im1 <- ifelse(i == 1L, n, i-1L)
     pavage(
       list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, im1], 1)),
-      0L, depth, Centroids, -1L, n, p, Sommets, colors
+      0L, depth, Centroids, -1L, n, Sommets, colors
     )
   }
   par(opar)

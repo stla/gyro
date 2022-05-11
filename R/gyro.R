@@ -563,10 +563,10 @@ gyrotriangle <- function(
 #'   facesColor = trek_pal("lcars_series"), g = function(u) 1-u^2
 #' )}
 plotGyrohull3d <- function(
-  points, s = 1, model = "U", iterations = 5, n = 100, edgesAsTubes = TRUE,
-  verticesAsSpheres = edgesAsTubes, edgesColor = "yellow",
-  spheresColor = edgesColor, tubesRadius = 0.03, spheresRadius = 0.05,
-  facesColor = "navy", bias = 1, interpolate = "linear", g = identity
+    points, s = 1, model = "U", iterations = 5, n = 100, edgesAsTubes = TRUE,
+    verticesAsSpheres = edgesAsTubes, edgesColor = "yellow",
+    spheresColor = edgesColor, tubesRadius = 0.03, spheresRadius = 0.05,
+    facesColor = "navy", bias = 1, interpolate = "linear", g = identity
 ){
   model <- match.arg(model, c("M", "U"))
   stopifnot(isBoolean(edgesAsTubes))
@@ -578,24 +578,13 @@ plotGyrohull3d <- function(
   ntriangles <- length(Triangles)
   Gtriangles <- vector("list", ntriangles)
   palette <- if(length(facesColor) > 1L) facesColor
-  if(model == "M"){
-    for(i in 1L:ntriangles){
-      triangle <- Triangles[[i]]
-      Gtriangles[[i]] <- Mgyrotriangle(
-        triangle[1L, ], triangle[2L, ], triangle[3L, ],
-        s = s, iterations = iterations, palette = palette,
-        bias = bias, interpolate = interpolate, g = g
-      )
-    }
-  }else{
-    for(i in 1L:ntriangles){
-      triangle <- Triangles[[i]]
-      Gtriangles[[i]] <- Ugyrotriangle(
-        triangle[1L, ], triangle[2L, ], triangle[3L, ],
-        s = s, iterations = iterations, palette = palette,
-        bias = bias, interpolate = interpolate, g = g
-      )
-    }
+  for(i in 1L:ntriangles){
+    triangle <- Triangles[[i]]
+    Gtriangles[[i]] <- gyrotriangle(
+      triangle[1L, ], triangle[2L, ], triangle[3L, ],
+      s = s, model = model, iterations = iterations, palette = palette,
+      bias = bias, interpolate = interpolate, g = g
+    )
   }
   mesh <- vcgClean(mergeMeshes(Gtriangles), sel = 0, silent = TRUE)
   if(is.null(palette)){
@@ -603,29 +592,21 @@ plotGyrohull3d <- function(
   }else{
     shade3d(mesh)
   }
-  if(model == "M"){
-    if(edgesAsTubes){
-      for(edge in Edges){
-        gtube <- Mgyrotube(
-          edge[1L, ], edge[2L, ], s = s, n = n, radius = tubesRadius
-        )
-        shade3d(gtube, color = edgesColor)
-      }
-    }else{
+  if(edgesAsTubes){
+    for(edge in Edges){
+      gtube <- gyrotube(
+        edge[1L, ], edge[2L, ], s = s, model = model,
+        n = n, radius = tubesRadius
+      )
+      shade3d(gtube, color = edgesColor)
+    }
+  }else{
+    if(model == "M"){
       for(edge in Edges){
         gsegment <- Mgyrosegment(
           edge[1L, ], edge[2L, ], s = s, n = n
         )
         lines3d(gsegment, color = edgesColor, lwd = 2)
-      }
-    }
-  }else{
-    if(edgesAsTubes){
-      for(edge in Edges){
-        gtube <- Ugyrotube(
-          edge[1L, ], edge[2L, ], s = s, n = n, radius = tubesRadius
-        )
-        shade3d(gtube, color = edgesColor)
       }
     }else{
       for(edge in Edges){

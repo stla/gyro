@@ -9,8 +9,8 @@ phiEM <- function(A){
   # gamm <- gyro:::gammaF(A, s)
   # gamm*A / (1+gamm)
 }
-phiMU <- function(A){
-  gyro:::PhiEU(phiEM(A), s)
+phiUM <- function(A){
+  gyro:::PhiUE(phiEM(A), s)
 }
 
 plotHdelaunayU <- function(
@@ -30,7 +30,7 @@ plotHdelaunayU <- function(
     }
   }
   opar <- par(mar = c(0, 0, 0, 0))
-  pts <- t(apply(s*hdel[["vertices"]], 1L, phiMU))
+  pts <- t(apply(s*hdel[["vertices"]], 1L, phiUM))
   plot(
     pts, type = "p", asp = 1,
     xlab = NA, ylab = NA, axes = FALSE

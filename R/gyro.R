@@ -74,13 +74,59 @@ gyroABt <- function(A, B, t, s = 1, model = "U"){
   }
 }
 
+PhiUE <- function(A, s){
+  gammaF(A, s) * A
+}
+
+PhiEU <- function(A, s){
+  betaF(A, s) * A
+}
+
+PhiEM <- function(A, s){
+  x <- dotprod(A) / s / s
+  if(x >= 1){
+    stop(
+      "In the M\u00f6bius gyrovector space, points must be ",
+      "strictly inside the centered ball of radius `s`.",
+      call. = FALSE
+    )
+  }
+  2 * A / (1 + x)
+}
+
+PhiUM <- function(A, s = 1){
+  PhiUE(PhiEM(A, s), s)
+}
+
+PhiME <- function(A, s){
+  gamm <- gammaF(A, s)
+  gamm * A / (1 + gamm)
+}
+
+PhiMU <- function(A, s = 1){
+  PhiME(PhiEU(A, s), s)
+}
+
+Egyromidpoint <- function(A, B, s){
+  gA <- gammaF(A, s); gB <- gammaF(B, s)
+  (gA*A + gB*B) / (gA + gB)
+}
+
 Ugyromidpoint <- function(A, B, s){
-  UgyroABt(A, B, 0.5, s)
+  PhiUE(Egyromidpoint(PhiEU(A, s), PhiEU(B, s), s), s)
 }
 
 Mgyromidpoint <- function(A, B, s){
-  MgyroABt(A, B, 0.5, s)
+  PhiME(Egyromidpoint(PhiEM(A, s), PhiEM(B, s), s), s)
 }
+
+# Ugyromidpoint <- function(A, B, s){
+#   UgyroABt(A, B, 0.5, s)
+# }
+#
+# Mgyromidpoint <- function(A, B, s){
+#   MgyroABt(A, B, 0.5, s)
+# }
 
 Ugyrosegment <- function(A, B, s, n){
   stopifnot(isPositiveNumber(s))
@@ -231,31 +277,14 @@ Mgyrosubdiv <- function(A1, A2, A3, s){
   )
 }
 
-PhiEU <- function(A, s){
-  gammaF(A, s) * A
-}
-
-PhiUE <- function(A, s){
-  betaF(A, s) * A
-}
-
-# gyromidpointU <- function(A, B, s=1){
-#   PhiEU(gyromidpointE(PhiUE(A,s=s),PhiUE(B,s=s),s=s),s=s)
-# }
-
 Egyrocentroid <- function(A, B, C, s){
   gA <- gammaF(A, s); gB <- gammaF(B, s); gC <- gammaF(C, s)
   (gA*A + gB*B + gC*C) / (gA + gB + gC)
 }
 
 Ugyrocentroid <- function(A, B, C, s){
-  PhiEU(Egyrocentroid(PhiUE(A, s), PhiUE(B, s), PhiUE(C, s), s), s)
+  PhiUE(Egyrocentroid(PhiEU(A, s), PhiEU(B, s), PhiEU(C, s), s), s)
 }
-
-# gyromidpointE <- function(A, B, s=1){
-#   gA <- gamm(A, s=s); gB <- gamm(B, s=s)
-#   (gA*A + gB*B) / (gA+gB)
-# }
 
 Mgyrocentroid <- function(A, B, C, s){
   s2 <- s * s

@@ -21,12 +21,12 @@ gyrotriangle(
 \arguments{
 \item{A, B, C}{three distinct 3D points}
 
-\item{s}{positive number, the radius of the Poincare disk if
+\item{s}{positive number, the radius of the Poincaré ball if
 \code{model="M"}, otherwise, if \code{model="U"}, this number
 defines the hyperbolic curvature (the smaller, the more curved)}
 
-\item{model}{the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
+\item{model}{the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 
 \item{iterations}{the gyrotriangle is constructed by iterated subdivisions,
 this argument is the number of iterations}

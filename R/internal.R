@@ -10,12 +10,20 @@ isPositiveNumber <- function(x){
   isNumber(x) && x > 0
 }
 
+isAtomicVector <- function(x){
+  is.atomic(x) && is.vector(x)
+}
+
 isPoint <- function(A){
-  is.atomic(A) && is.numeric(A) && length(A) >= 2L && !anyNA(A)
+  isAtomicVector(A) && is.numeric(A) && length(A) >= 2L && !anyNA(A)
 }
 
 is3dPoint <- function(A){
-  is.atomic(A) && is.numeric(A) && length(A) == 3L && !anyNA(A)
+  isAtomicVector(A) && is.numeric(A) && length(A) == 3L && !anyNA(A)
+}
+
+is2dPoint <- function(A){
+  isAtomicVector(A) && is.numeric(A) && length(A) == 2L && !anyNA(A)
 }
 
 isPositiveInteger <- function(m){

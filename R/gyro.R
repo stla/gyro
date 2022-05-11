@@ -16,7 +16,7 @@ Mgyroadd <- function(X, Y, s){
   if(x >= 1 || y >= 1){
     stop(
       "In the M\u00f6bius gyrovector space, points must be ",
-      "strictly inside the centered disk of radius `s`.",
+      "strictly inside the centered ball of radius `s`.",
       call. = FALSE
     )
   }
@@ -52,11 +52,11 @@ MgyroABt <- function(A, B, t, s){
 #'
 #' @param A,B two distinct points
 #' @param t a number
-#' @param s positive number, the radius of the Poincare disk if
+#' @param s positive number, the radius of the Poincaré ball if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
 #'   defines the hyperbolic curvature
-#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #'
 #' @return A point.
 #' @export
@@ -106,11 +106,11 @@ Mgyrosegment <- function(A, B, s, n){
 #' @encoding UTF-8
 #'
 #' @param A,B two distinct points (of the same dimension)
-#' @param s positive number, the radius of the Poincare disk if
+#' @param s positive number, the radius of the Poincaré ball if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
 #'   defines the hyperbolic curvature
-#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param n number of points forming the gyrosegment from \code{A} to \code{B}
 #'
 #' @return A numeric matrix with \code{n} rows. Each row is a point on the
@@ -154,11 +154,11 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
 #' @encoding UTF-8
 #'
 #' @param A,B distinct 3D points
-#' @param s positive number, the radius of the Poincare disk if
+#' @param s positive number, the radius of the Poincaré ball if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
 #'   defines the hyperbolic curvature (higher value, less curved)
-#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param n number of points forming the gyrosegment
 #' @param radius radius of the tube around the gyrosegment
 #' @param sides number of sides in the polygon cross section
@@ -268,7 +268,7 @@ Mgyrocentroid <- function(A, B, C, s){
   ){
     stop(
       "In the M\u00f6bius gyrovector space, points must be ",
-      "strictly inside the centered disk of radius `s`.",
+      "strictly inside the centered ball of radius `s`.",
       call. = FALSE
     )
   }
@@ -281,11 +281,11 @@ Mgyrocentroid <- function(A, B, C, s){
 #' @encoding UTF-8
 #'
 #' @param A,B,C three distinct 3D points
-#' @param s positive number, the radius of the Poincare disk if
+#' @param s positive number, the radius of the Poincaré ball if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
 #'   defines the hyperbolic curvature (the smaller, the more curved)
-#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param iterations the gyrotriangle is constructed by iterated subdivisions,
 #'   this argument is the number of iterations
 #' @param palette a vector of colors to decorate the triangle, or \code{NULL}
@@ -422,11 +422,11 @@ gyrotriangle <- function(
 #' @encoding UTF-8
 #'
 #' @param points matrix of 3D points, one point per row
-#' @param s positive number, the radius of the Poincare disk if
+#' @param s positive number, the radius of the Poincaré ball if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
 #'   defines the hyperbolic curvature (the smaller, the more curved)
-#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
-#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param iterations argument passed to \code{\link{gyrotriangle}}
 #' @param n argument passed to \code{\link{gyrotube}} or
 #'   \code{\link{gyrosegment}}, the number of points for each edge

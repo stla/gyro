@@ -10,7 +10,7 @@ plotHdelaunay(
   vertices = TRUE,
   edges = TRUE,
   circle = TRUE,
-  color = "random",
+  color = "distinct",
   hue = "random",
   luminosity = "random"
 )
@@ -18,17 +18,28 @@ plotHdelaunay(
 \arguments{
 \item{hdel}{an output of \code{\link{hdelaunay}}}
 
-\item{remove}{\code{NULL}, \code{"ivertices"}, \code{"iedges"} or \code{c("ivertices", "iedges")}}
+\item{remove}{what you want to remove, \code{NULL} for nothing,
+\code{"ivertices"} for the isolated vertices, \code{"iedges"}
+for the isolated edges or \code{c("ivertices", "iedges")} for
+the isolated vertices and the isolated edges; if not \code{NULL},
+this assumes you ran \code{\link{hdelaunay}} with the
+option \code{isolations=TRUE}}
 
-\item{vertices}{Boolean}
+\item{vertices}{Boolean, whether to plot the vertices}
 
-\item{edges}{Boolean}
+\item{edges}{Boolean, whether to plot the edges}
 
-\item{circle}{Boolean,}
+\item{circle}{Boolean, whether to plot the unit circle}
 
-\item{color}{either}
+\item{color}{this argument controls the colors of the triangles; it can be
+\code{NA} for no color, \code{"random"} for random colors generated
+with \code{\link[randomcoloR]{randomColor}}, \code{"distinct"} for
+distinct colors generated with
+\code{\link[randomcoloR]{distinctColorPalette}}, a single color or
+a vector of colors}
 
-\item{hue, luminosity}{passed to \code{\link[randomcoloR]{randomColor}}}
+\item{hue, luminosity}{passed to \code{\link[randomcoloR]{randomColor}}
+if \code{color="random"}}
 }
 \value{
 No returned value.
@@ -41,7 +52,7 @@ Plot a hyperbolic Delaunay triangulation obtained
 library(gyro)
 library(uniformly)
 set.seed(666)
-points <- runif_in_sphere(25L, d = 2)
+points <- runif_in_sphere(35L, d = 2)
 hdel <- hdelaunay(points)
 plotHdelaunay(hdel)
 }

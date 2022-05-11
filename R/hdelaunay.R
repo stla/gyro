@@ -67,12 +67,23 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
 #'   with \code{\link{hdelaunay}}.
 #'
 #' @param hdel an output of \code{\link{hdelaunay}}
-#' @param remove \code{NULL}, \code{"ivertices"}, \code{"iedges"} or \code{c("ivertices", "iedges")}
-#' @param vertices Boolean
-#' @param edges Boolean
-#' @param circle Boolean,
-#' @param color either
+#' @param remove what you want to remove, \code{NULL} for nothing,
+#'   \code{"ivertices"} for the isolated vertices, \code{"iedges"}
+#'   for the isolated edges or \code{c("ivertices", "iedges")} for
+#'   the isolated vertices and the isolated edges; if not \code{NULL},
+#'   this assumes you ran \code{\link{hdelaunay}} with the
+#'   option \code{isolations=TRUE}
+#' @param vertices Boolean, whether to plot the vertices
+#' @param edges Boolean, whether to plot the edges
+#' @param circle Boolean, whether to plot the unit circle
+#' @param color this argument controls the colors of the triangles; it can be
+#'   \code{NA} for no color, \code{"random"} for random colors generated
+#'   with \code{\link[randomcoloR]{randomColor}}, \code{"distinct"} for
+#'   distinct colors generated with
+#'   \code{\link[randomcoloR]{distinctColorPalette}}, a single color or
+#'   a vector of colors
 #' @param hue,luminosity passed to \code{\link[randomcoloR]{randomColor}}
+#'   if \code{color="random"}
 #'
 #' @return No returned value.
 #' @export
@@ -85,12 +96,12 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
 #' library(gyro)
 #' library(uniformly)
 #' set.seed(666)
-#' points <- runif_in_sphere(25L, d = 2)
+#' points <- runif_in_sphere(35L, d = 2)
 #' hdel <- hdelaunay(points)
 #' plotHdelaunay(hdel)
 plotHdelaunay <- function(
   hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,
-  color = "random", hue = "random", luminosity = "random"
+  color = "distinct", hue = "random", luminosity = "random"
 ){
   opar <- par(mar = c(0, 0, 0, 0))
   plot(
@@ -102,6 +113,7 @@ plotHdelaunay <- function(
   hedges <- hdel[["edges"]]
   triangles <- hdel[["triangles"]]
   colors <- randomColor(nrow(triangles), hue = hue, luminosity = luminosity)
+  colors <- distinctColorPalette(nrow(triangles))
   for(i in 1L:nrow(triangles)){
     trgl <- triangles[i, ]
     hpolypath <- rbind(

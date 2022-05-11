@@ -30,8 +30,38 @@ inversion <- function(circle, M) {
   inversion(circle, M)
 }
 
+#' @title Hyperbolic reflection
+#' @description Hyperbolic reflection in the Poincaré disk.
+#'
+#' @encoding UTF-8
+#'
+#' @param A,B two points in the Poincaré disk defining the reflection line
+#' @param M a point in the Poincaré disk to be reflected
+#'
+#' @return A point in the Poincaré disk, the image of \code{M} by the
+#'   hyperbolic reflection with respect to the line passing through
+#'   \code{A} and \code{B}.
+#' @export
+#'
+#' @examples
+#' library(gyro)
+#' library(plotrix)
+#' A <- c(0.45, 0.78)
+#' B <- c(0.1, -0.5)
+#' M <- c(0.7, 0)
+#' opar <- par(mar = c(0, 0, 0, 0))
+#' plot(NULL, type = "n", xlim = c(-1, 1), ylim = c(-1, 1), asp = 1,
+#'      axes = FALSE, xlab = NA, ylab = NA)
+#' draw.circle(0, 0, radius = 1, lwd = 2)
+#' lines(gyrosegment(A, B, model = "M"))
+#' points(rbind(A, B), pch = 19)
+#' points(rbind(M), pch = 19, col = "blue")
+#' P <- hreflection(A, B, M)
+#' points(rbind(P), pch = 19, col = "red")
+#' par(opar)
 hreflection <- function(A, B, M){
   stopifnot(is2dPoint(A), is2dPoint(B), is2dPoint(M))
+  stopifnot(dotprod(A) < 1, dotprod(B) < 1, dotprod(M) < 1)
   .hreflection(A, B, M)
 }
 

@@ -8,7 +8,7 @@ Description: Hyperbolic geometry in the hyperboloid model, with emphasis on the 
 License: GPL-3
 Encoding: UTF-8
 SystemRequirements: C++ 14, gmp, mpfr
-Imports: Rcpp, rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices, rstudioapi, clipr, plotrix, graphics
+Imports: Rcpp, rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices, rstudioapi, clipr, plotrix, graphics, randomcoloR
 LinkingTo: Rcpp, RcppCGAL, RcppEigen, BH
 Suggests: 
     rmarkdown,

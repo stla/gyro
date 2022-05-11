@@ -16,7 +16,7 @@ tiling(n, p, depth = 4, colors = c("navy", "yellow"), circle = TRUE, ...)
 
 \item{circle}{Boolean, whether to draw the unit circle}
 
-\item{...}{additional arguments passed to \link[plotrix]{draw.circle}}
+\item{...}{additional arguments passed to \code{\link[plotrix]{draw.circle}}}
 }
 \value{
 No returned value, just draws the hyperbolic tiling.

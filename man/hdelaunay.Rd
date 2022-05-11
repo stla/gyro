@@ -18,10 +18,11 @@ more accurate}
 }
 \value{
 A list with three fields \code{vertices}, \code{edges} and
-  \code{faces}, and two additional fields \code{mvertices} and
+  \code{triangles}, and two additional fields \code{mvertices} and
   \code{medges} if \code{isolations=TRUE}, giving the non-isolated
-  vertices and edges. The input \code{points} matrix and the output
-  \code{vertices} matrix are the same up to the order of the rows.
+  vertices and edges ("m" for "multivalent"). The input \code{points}
+  matrix and the output \code{vertices} matrix are the same up to the
+  order of the rows.
 }
 \description{
 Computes the hyperbolic Delaunay triangulation of a set of
@@ -33,4 +34,7 @@ library(uniformly)
 set.seed(666)
 points <- runif_in_sphere(10L, d = 2)
 hdelaunay(points)
+}
+\seealso{
+\code{\link{plotHdelaunay}}
 }

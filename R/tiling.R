@@ -121,7 +121,7 @@ pavage <- function(
 #' @param depth positive integer, the number of recursions
 #' @param colors two colors to fill the hyperbolic tiling
 #' @param circle Boolean, whether to draw the unit circle
-#' @param ... additional arguments passed to \link[plotrix]{draw.circle}
+#' @param ... additional arguments passed to \code{\link[plotrix]{draw.circle}}
 #'
 #' @return No returned value, just draws the hyperbolic tiling.
 #' @export

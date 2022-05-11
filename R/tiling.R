@@ -87,9 +87,9 @@ pavage <- function(
   color <- ifelse(i == 1L, colors[1L], colors[2L])
   polypath(
     rbind(
-      Mgyrosegment(triangle[[1L]], triangle[[2L]], s = 1, n = 60L)[-1L, ],
-      Mgyrosegment(triangle[[2L]], triangle[[3L]], s = 1, n = 60L)[-1L, ],
-      Mgyrosegment(triangle[[3L]], triangle[[1L]], s = 1, n = 60L)[-1L, ]
+      Mgyrosegment(triangle[[1L]], triangle[[2L]], s = 1, n = 50L)[-1L, ],
+      Mgyrosegment(triangle[[2L]], triangle[[3L]], s = 1, n = 50L)[-1L, ],
+      Mgyrosegment(triangle[[3L]], triangle[[1L]], s = 1, n = 50L)[-1L, ]
     ),
     col = color, border = NA
   )

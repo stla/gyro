@@ -94,7 +94,21 @@ PhiEM <- function(A, s){
   2 * A / (1 + x)
 }
 
+#' @title Isomorphism from Möbius gyrovector space to Ungar gyrovector space
+#' @description Isomorphism from the Möbius gyrovector space to
+#'   the Ungar gyrovector space.
+#'
+#' @encoding UTF-8
+#'
+#' @param A a point whose norm is lower than \code{s}
+#' @param s positive number, the radius of the Poincaré ball
+#'
+#' @return The point of the Ungar gyrovector space corresponding to \code{A}
+#'   by isomorphism.
+#' @export
 PhiUM <- function(A, s = 1){
+  stopifnot(isPoint(A))
+  stopifnot(s > 0)
   PhiUE(PhiEM(A, s), s)
 }
 
@@ -103,7 +117,22 @@ PhiME <- function(A, s){
   gamm * A / (1 + gamm)
 }
 
+#' @title Isomorphism from Ungar gyrovector space to Möbius gyrovector space
+#' @description Isomorphism from the Ungar gyrovector space to
+#'   the Möbius gyrovector space.
+#'
+#' @encoding UTF-8
+#'
+#' @param A a point in the Ungar vector space with curvature \code{s}
+#' @param s a positive number, the hyperbolic curvature of the Ungar
+#'   vector space
+#'
+#' @return The point of the Poincaré ball of radius \code{s} corresponding
+#'   to \code{A} by isomorphism.
+#' @export
 PhiMU <- function(A, s = 1){
+  stopifnot(isPoint(A))
+  stopifnot(s > 0)
   PhiME(PhiEU(A, s), s)
 }
 

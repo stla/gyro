@@ -3,7 +3,7 @@
 #endif
 
 template <typename HDtT, typename HPointT>
-Rcpp::List hdelaunay(const Rcpp::NumericMatrix points) {
+Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points) {
   std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
   hpts.reserve(npoints);
@@ -18,7 +18,7 @@ Rcpp::List hdelaunay(const Rcpp::NumericMatrix points) {
     int index = 0;
     for(typename HDtT::All_vertices_iterator vd = hdt.all_vertices_begin();
         vd != hdt.all_vertices_end(); ++vd) {
-      HPointT pt = vd->point();
+      const HPointT pt = vd->point();
       Vertices(0, index) = CGAL::to_double(pt.x());
       Vertices(1, index) = CGAL::to_double(pt.y());
       index++;
@@ -32,10 +32,10 @@ Rcpp::List hdelaunay(const Rcpp::NumericMatrix points) {
     for(typename HDtT::All_edges_iterator ed = hdt.all_edges_begin();
         ed != hdt.all_edges_end(); ++ed) {
       Rcpp::IntegerVector edge_i(2);
-      typename HDtT::Vertex_handle sVertex =
+      const typename HDtT::Vertex_handle sVertex =
           ed->first->vertex(HDtT::cw(ed->second));
       edge_i(0) = sVertex->id();
-      typename HDtT::Vertex_handle tVertex =
+      const typename HDtT::Vertex_handle tVertex =
           ed->first->vertex(HDtT::ccw(ed->second));
       edge_i(1) = tVertex->id();
       Edges(Rcpp::_, i) = edge_i;
@@ -63,10 +63,10 @@ Rcpp::List hdelaunay(const Rcpp::NumericMatrix points) {
 
 // [[Rcpp::export]]
 Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points) {
-  return hdelaunay<HDt, HPoint>(points);
+  return hdelaunay_cpp<HDt, HPoint>(points);
 }
 
 // [[Rcpp::export]]
 Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points) {
-  return hdelaunay<EHDt, EHPoint>(points);
+  return hdelaunay_cpp<EHDt, EHPoint>(points);
 }

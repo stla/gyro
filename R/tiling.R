@@ -25,3 +25,82 @@ inversion <- function(circle, M) {
   circle[["center"]] + circle[["radius"]]^2 * v / dotprod(v)
 }
 
+.hreflection <- function(A, B, M){
+  circle <- circumcircle(A, B, Mgyromidpoint(A, B, 1))
+  inversion(circle, M)
+}
+
+hreflection <- function(A, B, M){
+  stopifnot(is2dPoint(A), is2dPoint(B), is2dPoint(M))
+  .hreflection(A, B, M)
+}
+
+sommets <- function(n, p){
+  d <- sqrt(
+    cos(pi/n + pi/p)*cos(pi/p) /
+      (sin(2*pi/p) * sin(pi/n) + cos(pi/n + pi/p)* cos(pi/p))
+  )
+  zSommets <- c(d, vapply(1:(n-1), function(k){
+    exp(1i*2*k*pi/n)*d}, complex(1L)
+  ))
+  vapply(zSommets, function(z) c(Re(z), Im(z)), numeric(2L))
+}
+
+pavage <- function(
+  triangle, symetrie, niveau, Centroids, i, n, p, Sommets, colors
+){
+  if(dup <- anyDuplicated(round(Centroids, 6L))){
+    Centroids <- Centroids[-dup, ]
+  }
+  color <- ifelse(i == 1L, colors[1L], colors[2L])
+  polypath(
+    rbind(
+      Mgyrosegment(triangle[[1L]], triangle[[2L]], s = 1, n = 60L)[-1L, ],
+      Mgyrosegment(triangle[[2L]], triangle[[3L]], s = 1, n = 60L)[-1L, ],
+      Mgyrosegment(triangle[[3L]], triangle[[1L]], s = 1, n = 60L)[-1L, ]
+    ),
+    col = color, border = NA
+  )
+  if(niveau > 0L){
+    for(k in 1:n){
+      if(k != symetrie){
+        kp1 <- ifelse(k == n, 1L, k+1L)
+        newtriangle <- lapply(triangle, function(M){
+          .hreflection(Sommets[, k], Sommets[, kp1], M)
+        })
+        Centroids <- rbind(
+          Centroids,
+          Mgyrocentroid(
+            newtriangle[[1L]], newtriangle[[2L]], newtriangle[[3L]], s = 1
+          )
+        )
+        pavage(newtriangle, k, niveau-1L, Centroids, -i, n, p, Sommets, colors)
+      }
+    }
+  }
+}
+
+tiling <- function(n, p, depth, colors = c("navy", "yellow")){
+  stopifnot(isPositiveInteger(p), isPositiveInteger(n))
+  stopifnot(1/n + 1/p < 0.5)
+  Sommets <- sommets(n, p)
+  Centroids <- matrix(numeric(0L), nrow = 0L, ncol = 2L)
+  O <- c(0, 0)
+  opar <- par(mar = c(0, 0, 0, 0))
+  plot(NULL, type = "n", xlim = c(-1, 1), ylim = c(-1, 1), asp = 1,
+       axes = FALSE, xlab = NA, ylab = NA)
+  for(i in 1:n){
+    ip1 <- ifelse(i == n, 1L, i+1L)
+    pavage(
+      list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, ip1], 1)),
+      0L, depth, Centroids, 1L, n, p, Sommets, colors
+    )
+    im1 <- ifelse(i == 1L, n, i-1L)
+    pavage(
+      list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, im1], 1)),
+      0L, depth, Centroids, -1L, n, p, Sommets, colors
+    )
+  }
+  par(opar)
+  invisible(NULL)
+}

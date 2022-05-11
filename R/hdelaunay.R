@@ -14,12 +14,12 @@ NULL
 #' @param exact Boolean, whether to perform exact calculations; slower but
 #'   more accurate
 #'
-#' @return A list with three fields \code{vertices}, \code{edges} and
-#'   \code{triangles}, and two additional fields \code{mvertices} and
-#'   \code{medges} if \code{isolations=TRUE}, giving the non-isolated
-#'   vertices and edges ("m" for "multivalent"). The input \code{points}
-#'   matrix and the output \code{vertices} matrix are the same up to the
-#'   order of the rows.
+#' @return A list with four fields \code{vertices}, \code{edges},
+#'   \code{triangles} and \code{ntriangles}, and two additional fields
+#'   \code{mvertices} and \code{medges} if \code{isolations=TRUE}, giving
+#'   the non-isolated vertices and edges ("m" for "multivalent"). The input
+#'   \code{points} matrix and the output \code{vertices} matrix are the same
+#'   up to the order of the rows.
 #' @export
 #'
 #' @seealso \code{\link{plotHdelaunay}}
@@ -52,6 +52,7 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
   hdel[["vertices"]] <- t(hdel[["vertices"]])
   hdel[["edges"]] <- t(hdel[["edges"]])
   hdel[["triangles"]] <- t(hdel[["faces"]])
+  hdel[["ntriangles"]] <- ncol(hdel[["faces"]])
   if(isolations){
     mv <- apply(hdel[["edges"]], 1L, function(edge){
       (edge[1L] %in% hdel[["mvertices"]]) && (edge[2L] %in% hdel[["mvertices"]])
@@ -103,32 +104,69 @@ plotHdelaunay <- function(
   hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,
   color = "distinct", hue = "random", luminosity = "random"
 ){
+  if(!inherits(hdel, "hdelaunay")){
+    stop("The `hdel` argument must be an output of the `hdelaunay` function.")
+  }
+  if(!is.null(remove)){
+    isolations <- "medges" %in% names(hdel)
+    if(!isolations){
+      stop(
+        "In order to use the `remove` argument you have to run the ",
+        "`hdelaunay` function with `isolations=TRUE`."
+      )
+    }
+  }
   opar <- par(mar = c(0, 0, 0, 0))
   plot(
     NULL, type = "n", asp = 1, xlim = c(-1, 1), ylim = c(-1, 1),
     xlab = NA, ylab = NA, axes = FALSE
   )
-  draw.circle(0, 0, radius = 1, border = "black")
+  if(circle){
+    draw.circle(0, 0, radius = 1, border = "black")
+  }
   pts <- hdel[["vertices"]]
-  hedges <- hdel[["edges"]]
-  triangles <- hdel[["triangles"]]
-  colors <- randomColor(nrow(triangles), hue = hue, luminosity = luminosity)
-  colors <- distinctColorPalette(nrow(triangles))
-  for(i in 1L:nrow(triangles)){
-    trgl <- triangles[i, ]
-    hpolypath <- rbind(
-      Mgyrosegment(pts[trgl[1L], ], pts[trgl[3L], ], s = 1, n = 60)[-1L, ],
-      Mgyrosegment(pts[trgl[3L], ], pts[trgl[2L], ], s = 1, n = 60)[-1L, ],
-      Mgyrosegment(pts[trgl[2L], ], pts[trgl[1L], ], s = 1, n = 60)[-1L, ]
-    )
-    polypath(hpolypath, border = NA, col = colors[i])
+  if(length(color) > 1L || !is.na(color)){
+    triangles <- hdel[["triangles"]]
+    ntriangles <- nrow(triangles)
+    if(length(color) > 1L){
+      colors <- color
+    }else{
+      if(color == "random"){
+        colors <- randomColor(ntriangles, hue = hue, luminosity = luminosity)
+      }else if(color == "distinct"){
+        colors <- distinctColorPalette(ntriangles)
+      }else{
+        colors <- rep(color, ntriangles)
+      }
+    }
+    for(i in 1L:ntriangles){
+      trgl <- triangles[i, ]
+      hpolypath <- rbind(
+        Mgyrosegment(pts[trgl[1L], ], pts[trgl[3L], ], s = 1, n = 50)[-1L, ],
+        Mgyrosegment(pts[trgl[3L], ], pts[trgl[2L], ], s = 1, n = 50)[-1L, ],
+        Mgyrosegment(pts[trgl[2L], ], pts[trgl[1L], ], s = 1, n = 50)[-1L, ]
+      )
+      polypath(hpolypath, border = NA, col = colors[i])
+    }
   }
-  for(i in 1L:nrow(hedges)){
-    hedge <- hedges[i, ]
-    hsegment <- Mgyrosegment(pts[hedge[1L], ], pts[hedge[2L], ], s = 1, n = 60)
-    lines(hsegment, lty = "solid", col = "black", lwd = 1.5)
+  if(edges){
+    if("iedges" %in% remove){
+      hedges <- hdel[["medges"]]
+    }else{
+      hedges <- hdel[["edges"]]
+    }
+    for(i in 1L:nrow(hedges)){
+      hedge <- hedges[i, ]
+      hseg <- Mgyrosegment(pts[hedge[1L], ], pts[hedge[2L], ], s = 1, n = 50)
+      lines(hseg, lty = "solid", col = "black", lwd = 1.5)
+    }
   }
-  points(pts, pch = 19, cex = 0.9)
+  if(vertices){
+    if("ivertices" %in% remove){
+      pts <- hdel[["mvertices"]]
+    }
+    points(pts, pch = 19, cex = 0.9)
+  }
   par(opar)
   invisible(NULL)
 }

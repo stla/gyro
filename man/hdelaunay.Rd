@@ -17,12 +17,12 @@ two columns}
 more accurate}
 }
 \value{
-A list with three fields \code{vertices}, \code{edges} and
-  \code{triangles}, and two additional fields \code{mvertices} and
-  \code{medges} if \code{isolations=TRUE}, giving the non-isolated
-  vertices and edges ("m" for "multivalent"). The input \code{points}
-  matrix and the output \code{vertices} matrix are the same up to the
-  order of the rows.
+A list with four fields \code{vertices}, \code{edges},
+  \code{triangles} and \code{ntriangles}, and two additional fields
+  \code{mvertices} and \code{medges} if \code{isolations=TRUE}, giving
+  the non-isolated vertices and edges ("m" for "multivalent"). The input
+  \code{points} matrix and the output \code{vertices} matrix are the same
+  up to the order of the rows.
 }
 \description{
 Computes the hyperbolic Delaunay triangulation of a set of

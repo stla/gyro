@@ -38,6 +38,8 @@
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/hdelaunay.png)
 
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/Uhdelaunay.png)
+
 
 ## License
 

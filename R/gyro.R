@@ -48,6 +48,8 @@ MgyroABt <- function(A, B, t, s){
 #'   and this is \code{B} for \code{t=1}. For \code{t=1/2} this is the
 #'   gyromidpoint of the gyrosegment joining \code{A} and \code{B}.
 #'
+#' @encoding UTF-8
+#'
 #' @param A,B two distinct points
 #' @param t a number
 #' @param s positive number, the radius of the Poincare disk if
@@ -101,6 +103,8 @@ Mgyrosegment <- function(A, B, s, n){
 #' @title Gyrosegment
 #' @description Gyrosegment joining two given points.
 #'
+#' @encoding UTF-8
+#'
 #' @param A,B two distinct points (of the same dimension)
 #' @param s positive number, the radius of the Poincare disk if
 #'   \code{model="M"}, otherwise, if \code{model="U"}, this number
@@ -146,6 +150,8 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
 
 #' @title Gyrotube (tubular gyrosegment)
 #' @description Tubular gyrosegment joining two given 3D points.
+#'
+#' @encoding UTF-8
 #'
 #' @param A,B distinct 3D points
 #' @param s positive number, the radius of the Poincare disk if
@@ -271,6 +277,8 @@ Mgyrocentroid <- function(A, B, C, s){
 
 #' @title Gyrotriangle in 3D space
 #' @description 3D gyrotriangle as a mesh.
+#'
+#' @encoding UTF-8
 #'
 #' @param A,B,C three distinct 3D points
 #' @param s positive number, the radius of the Poincare disk if
@@ -410,6 +418,8 @@ gyrotriangle <- function(
 
 #' @title Hyperbolic convex hull
 #' @description Plot the hyperbolic convex hull of a set of 3D points.
+#'
+#' @encoding UTF-8
 #'
 #' @param points matrix of 3D points, one point per row
 #' @param s positive number, the radius of the Poincare disk if

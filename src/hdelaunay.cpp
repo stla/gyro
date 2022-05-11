@@ -2,8 +2,25 @@
 #include "gyro.h"
 #endif
 
+Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
+  size_t s = v.size();
+  for(size_t i = 0; i < s - 1; i++) {
+    size_t j = i + 1;
+    while(j <= s) {
+      if(v(i) == v(j)) {
+        v.erase(v.begin() + j);
+        s--;
+      } else {
+        j++;
+      }
+    }
+  }
+  return v;
+}
+
 template <typename HDtT, typename HPointT>
-Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points) {
+Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points,
+                         const bool isolations) {
   std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
   hpts.reserve(npoints);
@@ -56,17 +73,25 @@ Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points) {
       i++;
     }
   }
-  return Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
-                            Rcpp::Named("edges") = Edges,
-                            Rcpp::Named("faces") = Faces);
+  Rcpp::List out = Rcpp::List::create(Rcpp::Named("vertices") = Vertices,
+                                      Rcpp::Named("edges") = Edges,
+                                      Rcpp::Named("faces") = Faces);
+  if(isolations) {
+    Rcpp::IntegerVector mVertices = unique(Faces);
+    mVertices.sort(false);
+    out["mvertices"] = mVertices;
+  }
+  return out;
 }
 
 // [[Rcpp::export]]
-Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points) {
-  return hdelaunay_cpp<HDt, HPoint>(points);
+Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points,
+                       const bool isolations) {
+  return hdelaunay_cpp<HDt, HPoint>(points, isolations);
 }
 
 // [[Rcpp::export]]
-Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points) {
-  return hdelaunay_cpp<EHDt, EHPoint>(points);
+Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points,
+                        const bool isolations) {
+  return hdelaunay_cpp<EHDt, EHPoint>(points, isolations);
 }

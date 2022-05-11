@@ -12,31 +12,33 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // hdelaunay_K
-Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points);
-RcppExport SEXP _gyro_hdelaunay_K(SEXP pointsSEXP) {
+Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points, const bool isolations);
+RcppExport SEXP _gyro_hdelaunay_K(SEXP pointsSEXP, SEXP isolationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type points(pointsSEXP);
-    rcpp_result_gen = Rcpp::wrap(hdelaunay_K(points));
+    Rcpp::traits::input_parameter< const bool >::type isolations(isolationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(hdelaunay_K(points, isolations));
     return rcpp_result_gen;
 END_RCPP
 }
 // hdelaunay_EK
-Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points);
-RcppExport SEXP _gyro_hdelaunay_EK(SEXP pointsSEXP) {
+Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points, const bool isolations);
+RcppExport SEXP _gyro_hdelaunay_EK(SEXP pointsSEXP, SEXP isolationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type points(pointsSEXP);
-    rcpp_result_gen = Rcpp::wrap(hdelaunay_EK(points));
+    Rcpp::traits::input_parameter< const bool >::type isolations(isolationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(hdelaunay_EK(points, isolations));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_gyro_hdelaunay_K", (DL_FUNC) &_gyro_hdelaunay_K, 1},
-    {"_gyro_hdelaunay_EK", (DL_FUNC) &_gyro_hdelaunay_EK, 1},
+    {"_gyro_hdelaunay_K", (DL_FUNC) &_gyro_hdelaunay_K, 2},
+    {"_gyro_hdelaunay_EK", (DL_FUNC) &_gyro_hdelaunay_EK, 2},
     {NULL, NULL, 0}
 };
 

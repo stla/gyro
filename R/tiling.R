@@ -46,6 +46,8 @@ sommets <- function(n, p){
   vapply(zSommets, function(z) c(Re(z), Im(z)), numeric(2L))
 }
 
+#' @importFrom graphics polypath
+#' @noRd
 pavage <- function(
   triangle, symetrie, niveau, Centroids, i, n, p, Sommets, colors
 ){
@@ -80,15 +82,42 @@ pavage <- function(
   }
 }
 
-tiling <- function(n, p, depth, colors = c("navy", "yellow")){
+#' @title Hyperbolic tiling
+#' @description Draw a hyperbolic tiling of the Poincaré disk.
+#'
+#' @encoding UTF-8
+#'
+#' @param n,p two positive integers satisfying \code{1/n + 1/p < 1/2}
+#' @param depth positive integer, the number of recursions
+#' @param colors two colors to fill the hyperbolic tiling
+#' @param circle Boolean, whether to draw the unit circle
+#' @param ... additional arguments passed to \link[plotrix]{draw.circle}
+#'
+#' @return No returned value, just draws the hyperbolic tiling.
+#' @export
+#'
+#' @importFrom graphics par
+#'
+#' @examples
+#' library(gyro)
+#' \donttest{tiling(3, 7, border = "orange")}
+tiling <- function(
+  n, p, depth = 4, colors = c("navy", "yellow"), circle = TRUE, ...
+){
   stopifnot(isPositiveInteger(p), isPositiveInteger(n))
   stopifnot(1/n + 1/p < 0.5)
+  stopifnot(isPositiveInteger(depth))
+  stopifnot(length(colors) >= 2L)
+  stopifnot(isBoolean(circle))
   Sommets <- sommets(n, p)
   Centroids <- matrix(numeric(0L), nrow = 0L, ncol = 2L)
   O <- c(0, 0)
   opar <- par(mar = c(0, 0, 0, 0))
   plot(NULL, type = "n", xlim = c(-1, 1), ylim = c(-1, 1), asp = 1,
        axes = FALSE, xlab = NA, ylab = NA)
+  if(circle){
+    draw.circle(0, 0, radius = 1, ...)
+  }
   for(i in 1:n){
     ip1 <- ifelse(i == n, 1L, i+1L)
     pavage(

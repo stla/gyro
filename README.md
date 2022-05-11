@@ -36,6 +36,8 @@
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/htiling.png)
 
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/hdelaunay.png)
+
 
 ## License
 

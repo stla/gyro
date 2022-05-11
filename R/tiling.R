@@ -127,6 +127,7 @@ pavage <- function(
 #' @export
 #'
 #' @importFrom graphics par
+#' @importFrom plotrix draw.circle
 #'
 #' @examples
 #' library(gyro)

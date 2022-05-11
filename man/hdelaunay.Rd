@@ -31,6 +31,6 @@ Computes the hyperbolic Delaunay triangulation of a set of
 library(gyro)
 library(uniformly)
 set.seed(666)
-points <- runif_in_circle(10L, d = 2)
+points <- runif_in_sphere(10L, d = 2)
 hdelaunay(points)
 }

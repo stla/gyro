@@ -25,7 +25,7 @@ NULL
 #' library(gyro)
 #' library(uniformly)
 #' set.seed(666)
-#' points <- runif_in_circle(10L, d = 2)
+#' points <- runif_in_sphere(10L, d = 2)
 #' hdelaunay(points)
 hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
   stopifnot(is.matrix(points))

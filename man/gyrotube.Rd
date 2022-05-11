@@ -4,12 +4,17 @@
 \alias{gyrotube}
 \title{Gyrotube (tubular gyrosegment)}
 \usage{
-gyrotube(A, B, s = 1, n = 100, radius, sides = 90, caps = FALSE)
+gyrotube(A, B, s = 1, model = "U", n = 100, radius, sides = 90, caps = FALSE)
 }
 \arguments{
 \item{A, B}{distinct 3D points}
 
-\item{s}{positive number, the curvature (higher value, less curved)}
+\item{s}{positive number, the radius of the Poincare disk if
+\code{model="M"}, otherwise, if \code{model="U"}, this number
+defines the hyperbolic curvature (higher value, less curved)}
+
+\item{model}{the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 
 \item{n}{number of points forming the gyrosegment}
 

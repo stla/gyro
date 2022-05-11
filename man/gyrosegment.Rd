@@ -4,12 +4,17 @@
 \alias{gyrosegment}
 \title{Gyrosegment}
 \usage{
-gyrosegment(A, B, s = 1, n = 100)
+gyrosegment(A, B, s = 1, model = "U", n = 100)
 }
 \arguments{
 \item{A, B}{two distinct points (of the same dimension)}
 
-\item{s}{positive number, the curvature}
+\item{s}{positive number, the radius of the Poincare disk if
+\code{model="M"}, otherwise, if \code{model="U"}, this number
+defines the hyperbolic curvature}
+
+\item{model}{the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 
 \item{n}{number of points forming the gyrosegment from \code{A} to \code{B}}
 }

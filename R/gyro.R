@@ -50,7 +50,11 @@ MgyroABt <- function(A, B, t, s){
 #'
 #' @param A,B two distinct points
 #' @param t a number
-#' @param s positive number, the parameter defining the hyperbolic curvature
+#' @param s positive number, the radius of the Poincare disk if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature
+#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #'
 #' @return A point.
 #' @export
@@ -98,7 +102,11 @@ Mgyrosegment <- function(A, B, s, n){
 #' @description Gyrosegment joining two given points.
 #'
 #' @param A,B two distinct points (of the same dimension)
-#' @param s positive number, the curvature
+#' @param s positive number, the radius of the Poincare disk if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature
+#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param n number of points forming the gyrosegment from \code{A} to \code{B}
 #'
 #' @return A numeric matrix with \code{n} rows. Each row is a point on the
@@ -124,7 +132,7 @@ Mgyrosegment <- function(A, B, s, n){
 #' BC <- gyrosegment(B, C, s)
 #' view3d(30, 30, zoom = 0.75)
 #' lines3d(AB, lwd = 3); lines3d(AC, lwd = 3); lines3d(BC, lwd = 3)
-gyrosegment <- function(A, B, s = 1, n = 100, model = "U"){
+gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
   model <- match.arg(model, c("M", "U"))
   stopifnot(isPoint(A))
   stopifnot(isPoint(B))
@@ -140,7 +148,11 @@ gyrosegment <- function(A, B, s = 1, n = 100, model = "U"){
 #' @description Tubular gyrosegment joining two given 3D points.
 #'
 #' @param A,B distinct 3D points
-#' @param s positive number, the curvature (higher value, less curved)
+#' @param s positive number, the radius of the Poincare disk if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature (higher value, less curved)
+#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param n number of points forming the gyrosegment
 #' @param radius radius of the tube around the gyrosegment
 #' @param sides number of sides in the polygon cross section
@@ -171,7 +183,7 @@ gyrosegment <- function(A, B, s = 1, n = 100, model = "U"){
 #' shade3d(BC, color = "gold")
 #' spheres3d(rbind(A, B, C), radius = 0.04, color = "gold")
 gyrotube <- function(
-    A, B, s = 1, n = 100, model = "U", radius, sides = 90, caps = FALSE
+    A, B, s = 1, model = "U", n = 100, radius, sides = 90, caps = FALSE
 ){
   model <- match.arg(model, c("M", "U"))
   stopifnot(isPositiveNumber(s))
@@ -261,7 +273,11 @@ Mgyrocentroid <- function(A, B, C, s){
 #' @description 3D gyrotriangle as a mesh.
 #'
 #' @param A,B,C three distinct 3D points
-#' @param s positive number, the curvature (the smaller, the more curved)
+#' @param s positive number, the radius of the Poincare disk if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature (the smaller, the more curved)
+#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param iterations the gyrotriangle is constructed by iterated subdivisions,
 #'   this argument is the number of iterations
 #' @param palette a vector of colors to decorate the triangle, or \code{NULL}
@@ -396,7 +412,11 @@ gyrotriangle <- function(
 #' @description Plot the hyperbolic convex hull of a set of 3D points.
 #'
 #' @param points matrix of 3D points, one point per row
-#' @param s curvature parameter
+#' @param s positive number, the radius of the Poincare disk if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature (the smaller, the more curved)
+#' @param model the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+#'   Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param iterations argument passed to \code{\link{gyrotriangle}}
 #' @param n argument passed to \code{\link{gyrotube}} or
 #'   \code{\link{gyrosegment}}, the number of points for each edge

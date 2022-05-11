@@ -4,14 +4,19 @@
 \alias{gyroABt}
 \title{Point on a gyroline}
 \usage{
-gyroABt(A, B, t, s)
+gyroABt(A, B, t, s = 1, model = "U")
 }
 \arguments{
 \item{A, B}{two distinct points}
 
 \item{t}{a number}
 
-\item{s}{positive number, the parameter defining the hyperbolic curvature}
+\item{s}{positive number, the radius of the Poincare disk if
+\code{model="M"}, otherwise, if \code{model="U"}, this number
+defines the hyperbolic curvature}
+
+\item{model}{the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 }
 \value{
 A point.

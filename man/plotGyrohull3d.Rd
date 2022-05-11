@@ -7,6 +7,7 @@
 plotGyrohull3d(
   points,
   s = 1,
+  model = "U",
   iterations = 5,
   n = 100,
   edgesAsTubes = TRUE,
@@ -24,7 +25,12 @@ plotGyrohull3d(
 \arguments{
 \item{points}{matrix of 3D points, one point per row}
 
-\item{s}{curvature parameter}
+\item{s}{positive number, the radius of the Poincare disk if
+\code{model="M"}, otherwise, if \code{model="U"}, this number
+defines the hyperbolic curvature (the smaller, the more curved)}
+
+\item{model}{the hyperbolic model, either \code{"M"} (Mobius model, i.e.
+Poincare model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 
 \item{iterations}{argument passed to \code{\link{gyrotriangle}}}
 

@@ -1,13 +1,15 @@
 Package: gyro
 Type: Package
 Title: Three-Dimensional Hyperbolic Geometry
-Version: 0.2.0
+Version: 0.2.0.9000
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Hyperbolic geometry in the hyperboloid model, with emphasis on the 3D case. The methods are based on the gyrovector space theory developed by A. A. Ungar that can be found in the book 'Analytic Hyperbolic Geometry: Mathematical Foundations And Applications' <doi:10.1142/5914>.
 License: GPL-3
 Encoding: UTF-8
-Imports: rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices, rstudioapi, clipr
+SystemRequirements: C++ 14, gmp, mpfr
+Imports: Rcpp, rgl, Rvcg, Morpho, purrr, cxhull (>= 0.3.0), grDevices, rstudioapi, clipr
+LinkingTo: Rcpp, RcppCGAL, RcppEigen, BH
 Suggests: 
     rmarkdown,
     knitr,

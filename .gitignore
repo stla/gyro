@@ -39,5 +39,12 @@ vignettes/*.pdf
 .Renviron
 inst/doc
 
+# C files
+src/*.o
+src/*.so
+src/*.dll
+src-i386/
+src-x64/
+
 # other
-inst/trash
+inst/trash/

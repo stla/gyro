@@ -53,6 +53,6 @@ library(gyro)
 library(uniformly)
 set.seed(666)
 points <- runif_in_sphere(35L, d = 2)
-hdel <- hdelaunay(points)
+hdel <- hdelaunay(points, exact = TRUE)
 plotHdelaunay(hdel)
 }

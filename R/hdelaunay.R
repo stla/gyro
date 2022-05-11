@@ -98,7 +98,7 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
 #' library(uniformly)
 #' set.seed(666)
 #' points <- runif_in_sphere(35L, d = 2)
-#' hdel <- hdelaunay(points)
+#' hdel <- hdelaunay(points, exact = TRUE)
 #' plotHdelaunay(hdel)
 plotHdelaunay <- function(
   hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,

@@ -178,9 +178,12 @@ plotHdelaunay <- function(
     draw.circle(0, 0, radius = 1, border = "black")
   }
   pts <- hdel[["vertices"]]
-  if(is.function(color) || length(color) > 1L || !is.na(color)){
+  ntriangles <- hdel[["ntriangles"]]
+  if(
+    ntriangles > 0 &&
+    (is.function(color) || length(color) > 1L || !is.na(color))
+  ){
     triangles <- hdel[["triangles"]]
-    ntriangles <- nrow(triangles)
     if(is.function(color)){
       if(!is.element("centroids", names(hdel))){
         stop(

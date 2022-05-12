@@ -29,6 +29,9 @@ typedef CGAL::Hyperbolic_Delaunay_triangulation_2<EHDtt, EHTds> EHDt;
 
 Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
   size_t s = v.size();
+  if(s == 0 || s == 1) {
+    return v;
+  }
   for(size_t i = 0; i < s - 1; i++) {
     size_t j = i + 1;
     while(j < s) {

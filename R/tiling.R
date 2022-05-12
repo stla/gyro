@@ -129,13 +129,13 @@ pavage <- function(
 #' @importFrom graphics par
 #' @importFrom plotrix draw.circle
 #'
-#' @note This is slow. The higher value of \code{n}, the slower. And of course
+#' @note The higher value of \code{n}, the slower. And of course
 #'   increasing \code{depth} slows down the rendering. The value of \code{p}
 #'   has no influence on the speed.
 #'
 #' @examples
 #' library(gyro)
-#' \donttest{tiling(3, 7, border = "orange")}
+#' tiling(3, 7, border = "orange")
 tiling <- function(
   n, p, depth = 4, colors = c("navy", "yellow"), circle = TRUE, ...
 ){

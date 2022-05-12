@@ -25,11 +25,11 @@ No returned value, just draws the hyperbolic tiling.
 Draw a hyperbolic tiling of the Poincaré disk.
 }
 \note{
-This is slow. The higher value of \code{n}, the slower. And of course
+The higher value of \code{n}, the slower. And of course
   increasing \code{depth} slows down the rendering. The value of \code{p}
   has no influence on the speed.
 }
 \examples{
 library(gyro)
-\donttest{tiling(3, 7, border = "orange")}
+tiling(3, 7, border = "orange")
 }

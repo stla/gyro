@@ -165,9 +165,10 @@ Ugyrosegment <- function(A, B, s, n){
 }
 
 Mgyrosegment <- function(A, B, s, n){
-  t(vapply(seq(0, 1, length.out = n), function(t){
-    MgyroABt(A, B, t, s)
-  }, numeric(length(A))))
+  t(Mgyrosegment_cpp(A, B, s, n))
+  # t(vapply(seq(0, 1, length.out = n), function(t){
+  #   MgyroABt(A, B, t, s)
+  # }, numeric(length(A))))
 }
 
 #' @title Gyrosegment
@@ -213,6 +214,7 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
   stopifnot(length(A) == length(B))
   stopifnot(isPositiveNumber(s))
   stopifnot(isPositiveInteger(n))
+  stopifnot(n >= 2)
   stopifnot(areDistinct(A, B))
   if(model == "M"){
     if(dotprod(A) >= s || dotprod(B) >= s){

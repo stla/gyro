@@ -26,7 +26,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // Mgyroscalar_cpp
-Dvector Mgyroscalar_cpp(const double r, const DVector X, const double s);
+DVector Mgyroscalar_cpp(const double r, const DVector X, const double s);
 RcppExport SEXP _gyro_Mgyroscalar_cpp(SEXP rSEXP, SEXP XSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -39,7 +39,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // MgyroABt_cpp
-Dvector MgyroABt_cpp(const DVector A, const DVector B, const double t, const double s);
+DVector MgyroABt_cpp(const DVector A, const DVector B, const double t, const double s);
 RcppExport SEXP _gyro_MgyroABt_cpp(SEXP ASEXP, SEXP BSEXP, SEXP tSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -67,24 +67,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // hdelaunay_K
-Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points, const bool isolations);
+Rcpp::List hdelaunay_K(const DMatrix points, const bool isolations);
 RcppExport SEXP _gyro_hdelaunay_K(SEXP pointsSEXP, SEXP isolationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< const DMatrix >::type points(pointsSEXP);
     Rcpp::traits::input_parameter< const bool >::type isolations(isolationsSEXP);
     rcpp_result_gen = Rcpp::wrap(hdelaunay_K(points, isolations));
     return rcpp_result_gen;
 END_RCPP
 }
 // hdelaunay_EK
-Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points, const bool isolations);
+Rcpp::List hdelaunay_EK(const DMatrix points, const bool isolations);
 RcppExport SEXP _gyro_hdelaunay_EK(SEXP pointsSEXP, SEXP isolationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type points(pointsSEXP);
+    Rcpp::traits::input_parameter< const DMatrix >::type points(pointsSEXP);
     Rcpp::traits::input_parameter< const bool >::type isolations(isolationsSEXP);
     rcpp_result_gen = Rcpp::wrap(hdelaunay_EK(points, isolations));
     return rcpp_result_gen;

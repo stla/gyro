@@ -2,8 +2,6 @@
 #include "gyro.h"
 #endif
 
-#include "gyro_types.h"
-
 double sqnorm(const DVector v) {
   double x = std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
   return x;
@@ -24,13 +22,13 @@ DVector Mgyroadd_cpp(const DVector X, const DVector Y, const double s) {
 }
 
 // [[Rcpp::export]]
-Dvector Mgyroscalar_cpp(const double r, const DVector X, const double s) {
+DVector Mgyroscalar_cpp(const double r, const DVector X, const double s) {
   const double Xnorm = sqrt(sqnorm(X));
   return s / Xnorm * tanh(r * atanh(Xnorm / s)) * X;
 }
 
 // [[Rcpp::export]]
-Dvector MgyroABt_cpp(const DVector A,
+DVector MgyroABt_cpp(const DVector A,
                      const DVector B,
                      const double t,
                      const double s) {

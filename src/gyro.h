@@ -7,7 +7,7 @@
 // [[Rcpp::depends(BH)]]
 // [[Rcpp::plugins(cpp14)]]
 
-#include <Rcpp.h>
 #include <RcppEigen.h>
+#include "gyro_types.h"
 
 #define CGAL_EIGEN3_ENABLED 1

@@ -44,18 +44,18 @@ Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
 }
 
 template <typename HDtT, typename HPointT>
-Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points,
+Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {
   std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
   hpts.reserve(npoints);
   for(unsigned i = 0; i != npoints; i++) {
-    const Rcpp::NumericVector pt = points(Rcpp::_, i);
+    const DVector pt = points(Rcpp::_, i);
     hpts.emplace_back(HPointT(pt(0), pt(1)));
   }
   HDtT hdt;
   hdt.insert(hpts.begin(), hpts.end());
-  Rcpp::NumericMatrix Vertices(2, hdt.number_of_vertices());
+  DMatrix Vertices(2, hdt.number_of_vertices());
   {
     int index = 0;
     for(typename HDtT::All_vertices_iterator vd = hdt.all_vertices_begin();
@@ -110,13 +110,13 @@ Rcpp::List hdelaunay_cpp(const Rcpp::NumericMatrix points,
 }
 
 // [[Rcpp::export]]
-Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points,
+Rcpp::List hdelaunay_K(const DMatrix points,
                        const bool isolations) {
   return hdelaunay_cpp<HDt, HPoint>(points, isolations);
 }
 
 // [[Rcpp::export]]
-Rcpp::List hdelaunay_EK(const Rcpp::NumericMatrix points,
+Rcpp::List hdelaunay_EK(const DMatrix points,
                         const bool isolations) {
   return hdelaunay_cpp<EHDt, EHPoint>(points, isolations);
 }

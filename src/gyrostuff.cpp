@@ -2,8 +2,7 @@
 #include "gyro.h"
 #endif
 
-typedef Rcpp::NumericVector DVector;
-typedef Rcpp::NumericMatrix DMatrix;
+#include "gyro_types.h"
 
 double sqnorm(const DVector v) {
   double x = std::inner_product(v.begin(), v.end(), v.begin(), 0.0);
@@ -21,7 +20,7 @@ DVector Mgyroadd_cpp(const DVector X, const DVector Y, const double s) {
   double x = sqnorm(X) / s2;
   double y = sqnorm(Y) / s2;
   double xy = 2.0 * dotprod(X, Y) / s2;
-  return ((1 + xy + y) * X + (1 - x) * Y) / (1 + xy + x * y);
+  return ((1.0 + xy + y) * X + (1.0 - x) * Y) / (1.0 + xy + x * y);
 }
 
 // [[Rcpp::export]]

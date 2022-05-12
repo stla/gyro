@@ -11,6 +11,60 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// Mgyroadd_cpp
+DVector Mgyroadd_cpp(const DVector X, const DVector Y, const double s);
+RcppExport SEXP _gyro_Mgyroadd_cpp(SEXP XSEXP, SEXP YSEXP, SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const DVector >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const DVector >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(Mgyroadd_cpp(X, Y, s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Mgyroscalar_cpp
+Dvector Mgyroscalar_cpp(const double r, const DVector X, const double s);
+RcppExport SEXP _gyro_Mgyroscalar_cpp(SEXP rSEXP, SEXP XSEXP, SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double >::type r(rSEXP);
+    Rcpp::traits::input_parameter< const DVector >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(Mgyroscalar_cpp(r, X, s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MgyroABt_cpp
+Dvector MgyroABt_cpp(const DVector A, const DVector B, const double t, const double s);
+RcppExport SEXP _gyro_MgyroABt_cpp(SEXP ASEXP, SEXP BSEXP, SEXP tSEXP, SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const DVector >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const DVector >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double >::type t(tSEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(MgyroABt_cpp(A, B, t, s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Mgyrosegment_cpp
+DMatrix Mgyrosegment_cpp(const DVector A, const DVector B, const double s, const size_t n);
+RcppExport SEXP _gyro_Mgyrosegment_cpp(SEXP ASEXP, SEXP BSEXP, SEXP sSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const DVector >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const DVector >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const size_t >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(Mgyrosegment_cpp(A, B, s, n));
+    return rcpp_result_gen;
+END_RCPP
+}
 // hdelaunay_K
 Rcpp::List hdelaunay_K(const Rcpp::NumericMatrix points, const bool isolations);
 RcppExport SEXP _gyro_hdelaunay_K(SEXP pointsSEXP, SEXP isolationsSEXP) {
@@ -37,6 +91,10 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_gyro_Mgyroadd_cpp", (DL_FUNC) &_gyro_Mgyroadd_cpp, 3},
+    {"_gyro_Mgyroscalar_cpp", (DL_FUNC) &_gyro_Mgyroscalar_cpp, 3},
+    {"_gyro_MgyroABt_cpp", (DL_FUNC) &_gyro_MgyroABt_cpp, 4},
+    {"_gyro_Mgyrosegment_cpp", (DL_FUNC) &_gyro_Mgyrosegment_cpp, 4},
     {"_gyro_hdelaunay_K", (DL_FUNC) &_gyro_hdelaunay_K, 2},
     {"_gyro_hdelaunay_EK", (DL_FUNC) &_gyro_hdelaunay_EK, 2},
     {NULL, NULL, 0}

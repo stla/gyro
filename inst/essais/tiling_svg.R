@@ -3,8 +3,8 @@ library(rsvg)
 
 path <- "./inst/trash"
 
-svg(file.path(path, "htiling.svg"))
-tiling(3, 7, 9, circle = FALSE)
+svg(file.path(path, "htiling_4-6.svg"))
+tiling(4, 6, 4, circle = FALSE, colors = c("#FFFA0C", "#590000"))
 dev.off()
 
-rsvg_png(file.path(path, "htiling.svg"), file.path(path, "htiling.png"))
+rsvg_png(file.path(path, "htiling_4-6.svg"), file.path(path, "htiling_4-6.png"))

@@ -136,7 +136,6 @@ hdelaunay <- function(
 #'
 #' phi <- (1 + sqrt(5)) / 2
 #' theta <- head(seq(0, pi/2, length.out = 11), -1L)
-#' a <- phi^(sqrt(2*theta/pi) - 1)
 #' a <- phi^((2*theta/pi)^0.8 - 1)
 #' u <- a * cos(theta)
 #' v <- a * sin(theta)
@@ -144,7 +143,7 @@ hdelaunay <- function(
 #' y <- c(0, v, u, -v, -u)
 #' pts <- cbind(x, y) / 1.03
 #'
-#' hdel <- hdelaunay(pts, exact = TRUE)
+#' hdel <- hdelaunay(pts, centroids = TRUE, exact = TRUE)
 #'
 #' fcolor <- function(t){
 #'   RGB <- colorRamp(trek_pal("klingon"))(t)
@@ -183,6 +182,12 @@ plotHdelaunay <- function(
     triangles <- hdel[["triangles"]]
     ntriangles <- nrow(triangles)
     if(is.function(color)){
+      if(!is.element("centroids", names(hdel))){
+        stop(
+          "In order to use a function for the `colors` argument you have to ",
+          "run the `hdelaunay` function with `centroids=TRUE`."
+        )
+      }
       cnorms <- sqrt(apply(hdel[["centroids"]], 1L, dotprod))
       mincnorm <- min(cnorms)
       colors <- color((cnorms - mincnorm) / (max(cnorms) - mincnorm))

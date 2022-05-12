@@ -11,16 +11,10 @@ Ugyroadd <- function(A, B, s){
 }
 
 Mgyroadd <- function(X, Y, s){
-  x <- dotprod(X) / s / s
-  y <- dotprod(Y) / s / s
-  if(x >= 1 || y >= 1){
-    stop(
-      "In the M\u00f6bius gyrovector space, points must be ",
-      "strictly inside the centered ball of radius `s`.",
-      call. = FALSE
-    )
-  }
-  xy <- 2 * dotprod(X, Y) / s / s
+  s2 <- s * s
+  x <- dotprod(X) / s2
+  y <- dotprod(Y) / s2
+  xy <- 2 * dotprod(X, Y) / s2
   ((1 + xy + y) * X + (1 - x) * Y) / (1 + xy + x*y)
 }
 
@@ -68,6 +62,13 @@ gyroABt <- function(A, B, t, s = 1, model = "U"){
   stopifnot(isNumber(t))
   stopifnot(areDistinct(A, B))
   if(model == "M"){
+    if(dotprod(A) >= s || dotprod(B) >= s){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
     MgyroABt(A, B, t, s)
   }else{
     UgyroABt(A, B, t, s)
@@ -84,13 +85,6 @@ PhiEU <- function(A, s){
 
 PhiEM <- function(A, s){
   x <- dotprod(A) / s / s
-  if(x >= 1){
-    stop(
-      "In the M\u00f6bius gyrovector space, points must be ",
-      "strictly inside the centered ball of radius `s`.",
-      call. = FALSE
-    )
-  }
   2 * A / (1 + x)
 }
 
@@ -109,6 +103,13 @@ PhiEM <- function(A, s){
 PhiUM <- function(A, s = 1){
   stopifnot(isPoint(A))
   stopifnot(s > 0)
+  if(dotprod(A) >= s){
+    stop(
+      "In the M\u00f6bius gyrovector space, points must be ",
+      "strictly inside the centered ball of radius `s`.",
+      call. = TRUE
+    )
+  }
   PhiUE(PhiEM(A, s), s)
 }
 
@@ -217,6 +218,13 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
   stopifnot(isPoint(B))
   stopifnot(length(A) == length(B))
   if(model == "M"){
+    if(dotprod(A) >= s || dotprod(B) >= s){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
     Mgyrosegment(A, B, s, n)
   }else{
     Ugyrosegment(A, B, s, n)
@@ -274,6 +282,13 @@ gyrotube <- function(
   stopifnot(isPositiveInteger(sides))
   stopifnot(isBoolean(caps))
   if(model == "M"){
+    if(dotprod(A) >= s || dotprod(B) >= s){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
     points <- Mgyrosegment(A, B, s, n)
   }else{
     points <- Ugyrosegment(A, B, s, n)
@@ -412,6 +427,13 @@ gyrotriangle <- function(
 ){
   model <- match.arg(model, c("M", "U"))
   if(model == "M"){
+    if(dotprod(A) >= s || dotprod(B) >= s || dotprod(C) >= s){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
     subd <- Mgyrosubdiv(A, B, C, s)
     for(i in seq_len(iterations-1)){
       subd <- flatten(lapply(subd, function(triplet){
@@ -627,6 +649,16 @@ plotGyrohull3d <- function(
     facesColor = "navy", bias = 1, interpolate = "linear", g = identity
 ){
   model <- match.arg(model, c("M", "U"))
+  if(model == "M"){
+    snorms <- apply(points, 1L, dotprod)
+    if(any(snorms >= s)){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
+  }
   stopifnot(isBoolean(edgesAsTubes))
   stopifnot(isBoolean(verticesAsSpheres))
   hull <- .cxhull(points)

@@ -29,9 +29,9 @@ a look at this article.
 
 Now I've implemented these ideas in the **gyro** package. Maybe you know there 
 are several models of hyperbolic geometry; **gyro** deals with the hyperboloid 
-model (or Minkowski model). 
+model (or Minkowski model) and the Poincaré model. 
 
-The main functions of the **gyro** package are:
+The main functions of the **gyro** package dealing with 3D polyhedra are:
 
 - `gyrotube`, to draw a tubular hyperbolic segment (if you don't want a tube, 
 use `gyrosegment` instead);
@@ -54,5 +54,8 @@ examples. The [eusebeia](http://eusebeia.dyndns.org/4d/index) website is
 another resource to find the Cartesian coordinates of the vertices of some 
 polyhedra. Finally you can also use the R package 
 [Rpolyhedra](https://CRAN.R-project.org/package=Rpolyhedra). 
-It is archived on CRAN, but you can install it from the `tar.gz` archive.
 
+The **gyro** package also offers the `tiling` function to plot hyperbolic 
+tilings of the Poincaré disk, and the `hdelaunay` function to construct 
+hyperbolic Delaunay triangulations of the Poincaré disk. They are constructed 
+with the C++ library **CGAL**.

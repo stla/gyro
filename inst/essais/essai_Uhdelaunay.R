@@ -3,15 +3,8 @@ library(randomcoloR)
 library(plotrix)
 library(uniformly)
 
-s <- 1
-phiEM <- function(A){
-  gyro:::Mgyroscalar(2, A, s)
-  # gamm <- gyro:::gammaF(A, s)
-  # gamm*A / (1+gamm)
-}
-phiUM <- function(A){
-  gyro:::PhiUE(phiEM(A), s)
-}
+s <- 1 # no effect
+lambda <- 0.5
 
 plotHdelaunayU <- function(
     hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,
@@ -30,7 +23,7 @@ plotHdelaunayU <- function(
     }
   }
   opar <- par(mar = c(0, 0, 0, 0))
-  pts <- t(apply(s*hdel[["vertices"]], 1L, phiUM))
+  pts <- lambda * t(apply(s*hdel[["vertices"]], 1L, function(A) PhiUM(A, s)))
   plot(
     pts, type = "p", asp = 1,
     xlab = NA, ylab = NA, axes = FALSE
@@ -84,12 +77,12 @@ plotHdelaunayU <- function(
   invisible(NULL)
 }
 
-set.seed(314)
+set.seed(3141)
 
 pts <- rbind(
-  runif_in_annulus(20L, c(0, 0), 0.88, 0.9),
-  runif_in_annulus(10L, c(0, 0), 0.85, 0.87),
-  runif_in_sphere(5L, d = 2, r = 0.83)
+  runif_in_annulus(15L, c(0, 0), 0.88, 0.89),
+  runif_in_annulus(10L, c(0, 0), 0.86, 0.87),
+  runif_in_sphere(5L, d = 2, r = 0.85)
 )
 
 hdel <- hdelaunay(pts, exact = TRUE)

@@ -81,15 +81,15 @@ sommets <- function(n, p){
 pavage <- function(
   triangle, symetrie, niveau, Centroids, i, n, Sommets, colors
 ){
-  if(dup <- anyDuplicated(round(Centroids, 6L))){
-    Centroids <- Centroids[-dup, ]
-  }
+  # if(dup <- anyDuplicated(round(Centroids, 6L))){
+  #   Centroids <- Centroids[-dup, ]
+  # }
   color <- ifelse(i == 1L, colors[1L], colors[2L])
   polypath(
     rbind(
-      Mgyrosegment(triangle[[1L]], triangle[[2L]], s = 1, n = 50L)[-1L, ],
-      Mgyrosegment(triangle[[2L]], triangle[[3L]], s = 1, n = 50L)[-1L, ],
-      Mgyrosegment(triangle[[3L]], triangle[[1L]], s = 1, n = 50L)[-1L, ]
+      Mgyrosegment(triangle[, 1L], triangle[, 2L], s = 1, n = 50L)[-1L, ],
+      Mgyrosegment(triangle[, 2L], triangle[, 3L], s = 1, n = 50L)[-1L, ],
+      Mgyrosegment(triangle[, 3L], triangle[, 1L], s = 1, n = 50L)[-1L, ]
     ),
     col = color, border = NA
   )
@@ -97,13 +97,13 @@ pavage <- function(
     for(k in 1:n){
       if(k != symetrie){
         kp1 <- ifelse(k == n, 1L, k+1L)
-        newtriangle <- lapply(triangle, function(M){
-          .hreflection(Sommets[, k], Sommets[, kp1], M)
-        })
+        newtriangle <- vapply(1L:3L, function(j){
+          .hreflection(Sommets[, k], Sommets[, kp1], triangle[, j])
+        }, numeric(2L))
         Centroids <- rbind(
           Centroids,
           Mgyrocentroid(
-            newtriangle[[1L]], newtriangle[[2L]], newtriangle[[3L]], s = 1
+            newtriangle[, 1L], newtriangle[, 2L], newtriangle[, 3L], s = 1
           )
         )
         pavage(newtriangle, k, niveau-1L, Centroids, -i, n, Sommets, colors)
@@ -156,12 +156,12 @@ tiling <- function(
   for(i in 1:n){
     ip1 <- ifelse(i == n, 1L, i+1L)
     pavage(
-      list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, ip1], 1)),
+      cbind(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, ip1], 1)),
       0L, depth, Centroids, 1L, n, Sommets, colors
     )
     im1 <- ifelse(i == 1L, n, i-1L)
     pavage(
-      list(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, im1], 1)),
+      cbind(O, Sommets[, i], Mgyromidpoint(Sommets[, i], Sommets[, im1], 1)),
       0L, depth, Centroids, -1L, n, Sommets, colors
     )
   }

@@ -102,7 +102,7 @@ PhiEM <- function(A, s){
 #' @export
 PhiUM <- function(A, s = 1){
   stopifnot(isPoint(A))
-  stopifnot(s > 0)
+  stopifnot(isPositiveNumber(s))
   if(dotprod(A) >= s){
     stop(
       "In the M\u00f6bius gyrovector space, points must be ",
@@ -133,7 +133,7 @@ PhiME <- function(A, s){
 #' @export
 PhiMU <- function(A, s = 1){
   stopifnot(isPoint(A))
-  stopifnot(s > 0)
+  stopifnot(isPositiveNumber(s))
   PhiME(PhiEU(A, s), s)
 }
 
@@ -159,18 +159,12 @@ Mgyromidpoint <- function(A, B, s){
 # }
 
 Ugyrosegment <- function(A, B, s, n){
-  stopifnot(isPositiveNumber(s))
-  stopifnot(isPositiveInteger(n))
-  stopifnot(areDistinct(A, B))
   t(vapply(seq(0, 1, length.out = n), function(t){
     UgyroABt(A, B, t, s)
   }, numeric(length(A))))
 }
 
 Mgyrosegment <- function(A, B, s, n){
-  stopifnot(isPositiveNumber(s))
-  stopifnot(isPositiveInteger(n))
-  stopifnot(areDistinct(A, B))
   t(vapply(seq(0, 1, length.out = n), function(t){
     MgyroABt(A, B, t, s)
   }, numeric(length(A))))
@@ -217,6 +211,9 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
   stopifnot(isPoint(A))
   stopifnot(isPoint(B))
   stopifnot(length(A) == length(B))
+  stopifnot(isPositiveNumber(s))
+  stopifnot(isPositiveInteger(n))
+  stopifnot(areDistinct(A, B))
   if(model == "M"){
     if(dotprod(A) >= s || dotprod(B) >= s){
       stop(

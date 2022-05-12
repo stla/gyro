@@ -28,6 +28,14 @@ A list with four fields \code{vertices}, \code{edges},
 Computes the hyperbolic Delaunay triangulation of a set of
   points in the Poincaré disk.
 }
+\note{
+This function uses the C++ library CGAL. As graphs, the hyperbolic
+  Delaunay triangulation and the Euclidean Delaunay triangulation are the
+  same, except that the authors of CGAL choosed to discard the non-compact
+  triangles, i.e. the triangles whose circumcircle is not included in the
+  Poincaré disk. The hyperbolic Delaunay triangulation is always
+  connected (as a graph).
+}
 \examples{
 library(gyro)
 library(uniformly)

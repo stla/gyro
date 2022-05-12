@@ -11,23 +11,28 @@ NULL
 #' @param points points in the unit disk given as a numeric matrix with
 #'   two columns
 #' @param isolations Boolean, whether to identify isolated vertices and edges
+#' @param centroids Boolean, whether to return the hyperbolic centroids of
+#'   the triangles
 #' @param exact Boolean, whether to perform exact calculations; slower but
 #'   more accurate
 #'
-#' @return A list with four fields \code{vertices}, \code{edges},
-#'   \code{triangles} and \code{ntriangles}, and two additional fields
+#' @return A list with a minima four fields \code{vertices}, \code{edges},
+#'   \code{triangles} and \code{ntriangles}, two additional fields
 #'   \code{mvertices} and \code{medges} if \code{isolations=TRUE}, giving
-#'   the non-isolated vertices and edges ("m" for "multivalent"). The input
-#'   \code{points} matrix and the output \code{vertices} matrix are the same
-#'   up to the order of the rows.
+#'   the non-isolated vertices and edges ("m" for "multivalent"), and one
+#'   additional field \code{centroids} if \code{centroids=TRUE}, a matrix
+#'   giving the centroids of the triangles.
+#'   The input \code{points} matrix and the output \code{vertices} matrix
+#'   are the same up to the order of the rows.
 #' @export
 #'
 #' @note This function uses the C++ library CGAL. As graphs, the hyperbolic
 #'   Delaunay triangulation and the Euclidean Delaunay triangulation are the
 #'   same, except that the authors of CGAL choosed to discard the non-compact
 #'   triangles, i.e. the triangles whose circumcircle is not included in the
-#'   Poincaré disk. The hyperbolic Delaunay triangulation is always
-#'   connected (as a graph).
+#'   Poincaré disk. This is why there can be some isolated vertices (in the
+#'   sense that they do not belong to a triangl). The hyperbolic Delaunay
+#'   triangulation is always connected (as a graph).
 #'
 #' @seealso \code{\link{plotHdelaunay}}
 #'
@@ -37,7 +42,9 @@ NULL
 #' set.seed(666)
 #' points <- runif_in_sphere(10L, d = 2)
 #' hdelaunay(points)
-hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
+hdelaunay <- function(
+  points, isolations = FALSE, centroids = FALSE, exact = FALSE
+){
   stopifnot(is.matrix(points))
   stopifnot(ncol(points) == 2L)
   stopifnot(nrow(points) >= 3L)
@@ -50,21 +57,34 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
     stop("The points must be in the unit disk.")
   }
   stopifnot(isBoolean(isolations))
+  stopifnot(isBoolean(centroids))
   stopifnot(isBoolean(exact))
   if(exact){
     hdel <- hdelaunay_EK(t(points), isolations)
   }else{
     hdel <- hdelaunay_K(t(points), isolations)
   }
-  hdel[["vertices"]] <- t(hdel[["vertices"]])
-  hdel[["edges"]] <- t(hdel[["edges"]])
+  vertices <- t(hdel[["vertices"]])
+  hdel[["vertices"]] <- vertices
+  edges <- t(hdel[["edges"]])
+  hdel[["edges"]] <- edges
   hdel[["triangles"]] <- t(hdel[["faces"]])
-  hdel[["ntriangles"]] <- ncol(hdel[["faces"]])
+  ntriangles <- ncol(hdel[["faces"]])
+  hdel[["faces"]] <- NULL
+  hdel[["ntriangles"]] <- ntriangles
   if(isolations){
-    mv <- apply(hdel[["edges"]], 1L, function(edge){
-      (edge[1L] %in% hdel[["mvertices"]]) && (edge[2L] %in% hdel[["mvertices"]])
+    mvertices <- hdel[["mvertices"]]
+    mv <- apply(edges, 1L, function(edge){
+      (edge[1L] %in% mvertices) && (edge[2L] %in% mvertices)
     })
-    hdel[["medges"]] <- hdel[["edges"]][mv, ]
+    hdel[["medges"]] <- edges[mv, ]
+  }
+  if(centroids){
+    hdel[["centroids"]] <-
+      t(vapply(split(hdel[["triangles"]], seq_len(ntriangles)), function(ids){
+        pts <- vertices[ids, ]
+        Mgyrocentroid(pts[1L, ], pts[2L, ], pts[3L, ], s = 1)
+      }, numeric(2L)))
   }
   class(hdel) <- "hdelaunay"
   hdel
@@ -88,8 +108,10 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
 #'   \code{NA} for no color, \code{"random"} for random colors generated
 #'   with \code{\link[randomcoloR]{randomColor}}, \code{"distinct"} for
 #'   distinct colors generated with
-#'   \code{\link[randomcoloR]{distinctColorPalette}}, a single color or
-#'   a vector of colors
+#'   \code{\link[randomcoloR]{distinctColorPalette}}, a single color,
+#'   a vector of colors (color \code{i} attributed to the \code{i}-th
+#'   triangle), or a vectorized function mapping each point in the unit
+#'   interval to a color
 #' @param hue,luminosity passed to \code{\link[randomcoloR]{randomColor}}
 #'   if \code{color="random"}
 #'
@@ -107,9 +129,34 @@ hdelaunay <- function(points, isolations = FALSE, exact = FALSE){
 #' points <- runif_in_sphere(35L, d = 2)
 #' hdel <- hdelaunay(points, exact = TRUE)
 #' plotHdelaunay(hdel)
+#'
+#' # example with colors given by a function ####
+#' library(gyro)
+#' library(trekcolors)
+#'
+#' phi <- (1 + sqrt(5)) / 2
+#' theta <- head(seq(0, pi/2, length.out = 11), -1L)
+#' a <- phi^(sqrt(2*theta/pi) - 1)
+#' a <- phi^((2*theta/pi)^0.8 - 1)
+#' u <- a * cos(theta)
+#' v <- a * sin(theta)
+#' x <- c(0, u, -v, -u, v)
+#' y <- c(0, v, u, -v, -u)
+#' pts <- cbind(x, y) / 1.03
+#'
+#' hdel <- hdelaunay(pts, exact = TRUE)
+#'
+#' fcolor <- function(t){
+#'   RGB <- colorRamp(trek_pal("klingon"))(t)
+#'   rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)
+#' }
+#'
+#' plotHdelaunay(
+#'   hdel, vertices = FALSE, circle = FALSE, color = fcolor
+#' )
 plotHdelaunay <- function(
-  hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,
-  color = "distinct", hue = "random", luminosity = "random"
+    hdel, remove = NULL, vertices = TRUE, edges = TRUE, circle = TRUE,
+    color = "distinct", hue = "random", luminosity = "random"
 ){
   if(!inherits(hdel, "hdelaunay")){
     stop("The `hdel` argument must be an output of the `hdelaunay` function.")
@@ -132,10 +179,14 @@ plotHdelaunay <- function(
     draw.circle(0, 0, radius = 1, border = "black")
   }
   pts <- hdel[["vertices"]]
-  if(length(color) > 1L || !is.na(color)){
+  if(is.function(color) || length(color) > 1L || !is.na(color)){
     triangles <- hdel[["triangles"]]
     ntriangles <- nrow(triangles)
-    if(length(color) > 1L){
+    if(is.function(color)){
+      cnorms <- sqrt(apply(hdel[["centroids"]], 1L, dotprod))
+      mincnorm <- min(cnorms)
+      colors <- color((cnorms - mincnorm) / (max(cnorms) - mincnorm))
+    }else if(length(color) > 1L){
       colors <- color
     }else{
       if(color == "random"){

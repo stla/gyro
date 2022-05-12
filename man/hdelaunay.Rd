@@ -5,7 +5,7 @@
 \alias{hdelaunay}
 \title{Hyperbolic Delaunay triangulation}
 \usage{
-hdelaunay(points, isolations = FALSE, exact = FALSE)
+hdelaunay(points, isolations = FALSE, centroids = FALSE, exact = FALSE)
 }
 \arguments{
 \item{points}{points in the unit disk given as a numeric matrix with
@@ -13,16 +13,21 @@ two columns}
 
 \item{isolations}{Boolean, whether to identify isolated vertices and edges}
 
+\item{centroids}{Boolean, whether to return the hyperbolic centroids of
+the triangles}
+
 \item{exact}{Boolean, whether to perform exact calculations; slower but
 more accurate}
 }
 \value{
-A list with four fields \code{vertices}, \code{edges},
-  \code{triangles} and \code{ntriangles}, and two additional fields
+A list with a minima four fields \code{vertices}, \code{edges},
+  \code{triangles} and \code{ntriangles}, two additional fields
   \code{mvertices} and \code{medges} if \code{isolations=TRUE}, giving
-  the non-isolated vertices and edges ("m" for "multivalent"). The input
-  \code{points} matrix and the output \code{vertices} matrix are the same
-  up to the order of the rows.
+  the non-isolated vertices and edges ("m" for "multivalent"), and one
+  additional field \code{centroids} if \code{centroids=TRUE}, a matrix
+  giving the centroids of the triangles.
+  The input \code{points} matrix and the output \code{vertices} matrix
+  are the same up to the order of the rows.
 }
 \description{
 Computes the hyperbolic Delaunay triangulation of a set of
@@ -33,8 +38,9 @@ This function uses the C++ library CGAL. As graphs, the hyperbolic
   Delaunay triangulation and the Euclidean Delaunay triangulation are the
   same, except that the authors of CGAL choosed to discard the non-compact
   triangles, i.e. the triangles whose circumcircle is not included in the
-  Poincaré disk. The hyperbolic Delaunay triangulation is always
-  connected (as a graph).
+  Poincaré disk. This is why there can be some isolated vertices (in the
+  sense that they do not belong to a triangl). The hyperbolic Delaunay
+  triangulation is always connected (as a graph).
 }
 \examples{
 library(gyro)

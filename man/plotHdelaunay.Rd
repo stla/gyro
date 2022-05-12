@@ -35,8 +35,10 @@ option \code{isolations=TRUE}}
 \code{NA} for no color, \code{"random"} for random colors generated
 with \code{\link[randomcoloR]{randomColor}}, \code{"distinct"} for
 distinct colors generated with
-\code{\link[randomcoloR]{distinctColorPalette}}, a single color or
-a vector of colors}
+\code{\link[randomcoloR]{distinctColorPalette}}, a single color,
+a vector of colors (color \code{i} attributed to the \code{i}-th
+triangle), or a vectorized function mapping each point in the unit
+interval to a color}
 
 \item{hue, luminosity}{passed to \code{\link[randomcoloR]{randomColor}}
 if \code{color="random"}}
@@ -55,4 +57,29 @@ set.seed(666)
 points <- runif_in_sphere(35L, d = 2)
 hdel <- hdelaunay(points, exact = TRUE)
 plotHdelaunay(hdel)
+
+# example with colors given by a function ####
+library(gyro)
+library(trekcolors)
+
+phi <- (1 + sqrt(5)) / 2
+theta <- head(seq(0, pi/2, length.out = 11), -1L)
+a <- phi^(sqrt(2*theta/pi) - 1)
+a <- phi^((2*theta/pi)^0.8 - 1)
+u <- a * cos(theta)
+v <- a * sin(theta)
+x <- c(0, u, -v, -u, v)
+y <- c(0, v, u, -v, -u)
+pts <- cbind(x, y) / 1.03
+
+hdel <- hdelaunay(pts, exact = TRUE)
+
+fcolor <- function(t){
+  RGB <- colorRamp(trek_pal("klingon"))(t)
+  rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)
+}
+
+plotHdelaunay(
+  hdel, vertices = FALSE, circle = FALSE, color = fcolor
+)
 }

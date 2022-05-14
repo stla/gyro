@@ -158,6 +158,44 @@ Mgyromidpoint <- function(A, B, s){
 #   MgyroABt(A, B, 0.5, s)
 # }
 
+#' @title Gyromidpoint
+#' @description The gyromidpoint of a \code{\link{gyrosegment}}.
+#'
+#' @encoding UTF-8
+#'
+#' @param A,B two distinct points (of the same dimension)
+#' @param s positive number, the radius of the Poincaré ball if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#'
+#' @return A point, the gyromidpoint of a the \code{\link{gyrosegment}}
+#'   joining \code{A} and \code{B}.
+#' @export
+#' @note This is the same as \code{gyroABt(A, B, 1/2, s)} but the
+#'   calculation is more efficient.
+gyromidpoint <- function(A, B, s = 1, model = "U"){
+  model <- match.arg(model, c("M", "U"))
+  stopifnot(isPoint(A))
+  stopifnot(isPoint(B))
+  stopifnot(length(A) == length(B))
+  stopifnot(isPositiveNumber(s))
+  stopifnot(areDistinct(A, B))
+  if(model == "M"){
+    if(dotprod(A) >= s || dotprod(B) >= s){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
+    Mgyromidpoint(A, B, s)
+  }else{
+    Ugyromidpoint(A, B, s)
+  }
+}
+
 Ugyrosegment <- function(A, B, s, n){
   t(vapply(seq(0, 1, length.out = n), function(t){
     UgyroABt(A, B, t, s)
@@ -184,21 +222,49 @@ Mgyrosegment <- function(A, B, s, n){
 #'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
 #' @param n number of points forming the gyrosegment from \code{A} to \code{B}
 #'
-#' @return A numeric matrix with \code{n} rows. Each row is a point on the
+#' @return A numeric matrix with \code{n} rows. Each row is a point of the
 #'   gyrosegment from \code{A} (the first row) to \code{B} (the last row).
 #' @export
 #'
-#' @examples library(gyro)
+#' @examples
+#' library(gyro)
 #' # a 2D example ####
 #' A <- c(1, 2); B <- c(1, 1)
+#' opar <- par(mfrow = c(1, 2), mar = c(2, 2, 2, 0.5))
 #' plot(rbind(A, B), type = "p", pch = 19, xlab = NA, ylab = NA,
-#'      xlim = c(0, 2), ylim = c(0, 2), asp = 1)
-#' AB <- gyrosegment(A, B, s = 0.2)
-#' lines(AB) # this is a piece of an hyperboloid
-#' text(t(A), expression(italic(A)), pos = 1)
+#'      xlim = c(0, 2), ylim = c(0, 2), main = "s = 0.2")
+#' s <- 0.2
+#' AB <- gyrosegment(A, B, s)
+#' lines(AB, col = "blue", lwd = 2)
+#' text(t(A), expression(italic(A)), pos = 2)
 #' text(t(B), expression(italic(B)), pos = 3)
+#' # this is an hyperbola whose asymptotes meet at the origin
+#' # approximate asymptotes
+#' lines(rbind(c(0, 0), gyroABt(A, B, t = -20, s)), lty = "dashed")
+#' lines(rbind(c(0, 0), gyroABt(A, B, t = 20, s)), lty = "dashed")
+#' # plot the gyromidoint
+#' points(
+#'  rbind(gyromidpoint(A, B, s)),
+#'  type = "p", pch = 19, col = "red"
+#' )
+#' # another one, with a different `s`
+#' plot(rbind(A, B), type = "p", pch = 19, xlab = NA, ylab = NA,
+#'      xlim = c(0, 2), ylim = c(0, 2), main = "s = 0.1")
+#' s <- 0.1
+#' AB <- gyrosegment(A, B, s)
+#' lines(AB, col = "blue", lwd = 2)
+#' text(t(A), expression(italic(A)), pos = 2)
+#' text(t(B), expression(italic(B)), pos = 3)
+#' # approximate asymptotes
+#' lines(rbind(c(0, 0), gyroABt(A, B, t = -20, s)), lty = "dashed")
+#' lines(rbind(c(0, 0), gyroABt(A, B, t = 20, s)), lty = "dashed")
+#' # plot the gyromidoint
+#' points(
+#'  rbind(gyromidpoint(A, B, s)),
+#'  type = "p", pch = 19, col = "red"
+#' )
 #'
-#' # a 3D hyperbolic triangle
+#' # a 3D hyperbolic triangle ####
 #' library(rgl)
 #' A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
 #' s <- 0.3

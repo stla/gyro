@@ -20,7 +20,7 @@ Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)}
 \item{n}{number of points forming the gyrosegment from \code{A} to \code{B}}
 }
 \value{
-A numeric matrix with \code{n} rows. Each row is a point on the
+A numeric matrix with \code{n} rows. Each row is a point of the
   gyrosegment from \code{A} (the first row) to \code{B} (the last row).
 }
 \description{
@@ -30,14 +30,41 @@ Gyrosegment joining two given points.
 library(gyro)
 # a 2D example ####
 A <- c(1, 2); B <- c(1, 1)
+opar <- par(mfrow = c(1, 2), mar = c(2, 2, 2, 0.5))
 plot(rbind(A, B), type = "p", pch = 19, xlab = NA, ylab = NA,
-     xlim = c(0, 2), ylim = c(0, 2), asp = 1)
-AB <- gyrosegment(A, B, s = 0.2)
-lines(AB) # this is a piece of an hyperboloid
-text(t(A), expression(italic(A)), pos = 1)
+     xlim = c(0, 2), ylim = c(0, 2), main = "s = 0.2")
+s <- 0.2
+AB <- gyrosegment(A, B, s)
+lines(AB, col = "blue", lwd = 2)
+text(t(A), expression(italic(A)), pos = 2)
 text(t(B), expression(italic(B)), pos = 3)
+# this is an hyperbola whose asymptotes meet at the origin
+# approximate asymptotes
+lines(rbind(c(0, 0), gyroABt(A, B, t = -20, s)), lty = "dashed")
+lines(rbind(c(0, 0), gyroABt(A, B, t = 20, s)), lty = "dashed")
+# plot the gyromidoint
+points(
+ rbind(gyromidpoint(A, B, s)),
+ type = "p", pch = 19, col = "red"
+)
+# another one, with a different `s`
+plot(rbind(A, B), type = "p", pch = 19, xlab = NA, ylab = NA,
+     xlim = c(0, 2), ylim = c(0, 2), main = "s = 0.1")
+s <- 0.1
+AB <- gyrosegment(A, B, s)
+lines(AB, col = "blue", lwd = 2)
+text(t(A), expression(italic(A)), pos = 2)
+text(t(B), expression(italic(B)), pos = 3)
+# approximate asymptotes
+lines(rbind(c(0, 0), gyroABt(A, B, t = -20, s)), lty = "dashed")
+lines(rbind(c(0, 0), gyroABt(A, B, t = 20, s)), lty = "dashed")
+# plot the gyromidoint
+points(
+ rbind(gyromidpoint(A, B, s)),
+ type = "p", pch = 19, col = "red"
+)
 
-# a 3D hyperbolic triangle
+# a 3D hyperbolic triangle ####
 library(rgl)
 A <- c(1, 0, 0); B <- c(0, 1, 0); C <- c(0, 0, 1)
 s <- 0.3

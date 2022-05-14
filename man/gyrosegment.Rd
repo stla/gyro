@@ -26,6 +26,10 @@ A numeric matrix with \code{n} rows. Each row is a point of the
 \description{
 Gyrosegment joining two given points.
 }
+\note{
+The gyrosegment is obtained from \code{\link{gyroABt}} by varying
+\code{t} from \code{0} to \code{1}.
+}
 \examples{
 library(gyro)
 # a 2D example ####

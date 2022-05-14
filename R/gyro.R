@@ -226,6 +226,9 @@ Mgyrosegment <- function(A, B, s, n){
 #'   gyrosegment from \code{A} (the first row) to \code{B} (the last row).
 #' @export
 #'
+#' @note The gyrosegment is obtained from \code{\link{gyroABt}} by varying
+#' \code{t} from \code{0} to \code{1}.
+#'
 #' @examples
 #' library(gyro)
 #' # a 2D example ####

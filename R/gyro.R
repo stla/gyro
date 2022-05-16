@@ -547,7 +547,6 @@ gyrotriangle <- function(
   mesh
 }
 
-
 #' @importFrom cxhull cxhull VerticesXYZ EdgesXYZ TrianglesXYZ
 #' @noRd
 .cxhull <- function(points){

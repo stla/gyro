@@ -1,7 +1,7 @@
 Package: gyro
 Type: Package
 Title: Hyperbolic Geometry
-Version: 1.0.0
+Version: 1.0.1
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Hyperbolic geometry in the hyperboloid model and the Poincaré model. The methods are based on the gyrovector space theory developed by A. A. Ungar that can be found in the book 'Analytic Hyperbolic Geometry: Mathematical Foundations And Applications' <doi:10.1142/5914>. The package provides functions to plot three-dimensional hyperbolic polyhedra, to plot hyperbolic tilings of the Poincaré disk, and to construct and plot Delaunay hyperbolic triangulations of the Poincaré disk. They are constructed with the help of the C++ library 'CGAL'.

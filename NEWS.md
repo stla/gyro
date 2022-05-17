@@ -1,3 +1,8 @@
+# gyro 1.0.0 (2022-05-17)
+
+No change for the user.
+
+
 # gyro 1.0.0 (2022-05-16)
 
 - Gyrostuff for the Möbius (i.e. Poincaré) hyperbolic model.

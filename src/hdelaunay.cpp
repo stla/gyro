@@ -66,8 +66,8 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
       HPointT pt = vd->point();
       Vertices(0, index) = CGAL::to_double(pt.x());
       Vertices(1, index) = CGAL::to_double(pt.y());
-      index++;
       vd->id() = index;
+      index++;
     }
   }
   const size_t nedges = hdt.number_of_hyperbolic_edges();
@@ -79,10 +79,10 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
       Rcpp::IntegerVector edge_i(2);
       const typename HDtT::Vertex_handle sVertex =
           ed->first->vertex(HDtT::cw(ed->second));
-      edge_i(0) = sVertex->id();
+      edge_i(0) = sVertex->id() + 1;
       const typename HDtT::Vertex_handle tVertex =
           ed->first->vertex(HDtT::ccw(ed->second));
-      edge_i(1) = tVertex->id();
+      edge_i(1) = tVertex->id() + 1;
       Edges(Rcpp::_, i) = edge_i;
       i++;
     }
@@ -94,9 +94,9 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
     for(typename HDtT::All_faces_iterator fd = hdt.all_faces_begin();
         fd != hdt.all_faces_end(); ++fd) {
       Rcpp::IntegerVector face_i(3);
-      face_i(0) = fd->vertex(0)->id();
-      face_i(1) = fd->vertex(1)->id();
-      face_i(2) = fd->vertex(2)->id();
+      face_i(0) = fd->vertex(0)->id() + 1;
+      face_i(1) = fd->vertex(1)->id() + 1;
+      face_i(2) = fd->vertex(2)->id() + 1;
       Faces(Rcpp::_, i) = face_i;
       i++;
     }

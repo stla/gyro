@@ -49,21 +49,21 @@ Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
 template <typename HDtT, typename HPointT>
 Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {
-  std::vector<typename HPointT> hpts;
+  std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
   hpts.reserve(npoints);
   for(unsigned i = 0; i != npoints; i++) {
     const DVector pt = points(Rcpp::_, i);
     hpts.emplace_back(HPointT(pt(0), pt(1)));
   }
-  typename HDtT hdt;
+  HDtT hdt;
   hdt.insert(hpts.begin(), hpts.end());
   DMatrix Vertices(2, hdt.number_of_vertices());
   {
     int index = 0;
     for(typename HDtT::All_vertices_iterator vd = hdt.all_vertices_begin();
         vd != hdt.all_vertices_end(); ++vd) {
-      const typename HPointT pt = vd->point();
+      HPointT pt = vd->point();
       Vertices(0, index) = CGAL::to_double(pt.x());
       Vertices(1, index) = CGAL::to_double(pt.y());
       index++;

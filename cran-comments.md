@@ -3,6 +3,9 @@ in my code to which one has to associate some indices. I associated indices
 starting from 1. My guess is that this is the cause of the errors and the 
 indices must start from 0. I did the correction.
 
+I fixed the http link in the vignette.
+
+
 ## Testing environments
 
 - Local R-4.1.2 on Windows 10

@@ -51,31 +51,41 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {
   std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
-  hpts.reserve(npoints);
-  for(unsigned i = 0; i != npoints; i++) {
-    const DVector pt = points(Rcpp::_, i);
-    hpts.emplace_back(HPointT(pt(0), pt(1)));
-  }
+  // hpts.reserve(npoints);
+  // for(unsigned i = 0; i != npoints; i++) {
+  //   const DVector pt = points(Rcpp::_, i);
+  //   hpts.emplace_back(HPointT(pt(0), pt(1)));
+  // }
   HDtT hdt;
-  hdt.insert(hpts.begin(), hpts.end());
+  typename HDtT::Vertex_handle vh;
+  for(unsigned i = 0; i < npoints; i++) {
+    const DVector pt = points(Rcpp::_, i);
+    vh = hdt.insert(HPointT(pt(0), pt(1)));
+    vh->id() = i;
+  }
+  //hdt.insert(hpts.begin(), hpts.end());
   DMatrix Vertices(2, hdt.number_of_vertices());
+//  Rcpp::Rcout << "nvertices: " << hdt.number_of_vertices();
   {
     int index = 0;
     for(typename HDtT::All_vertices_iterator vd = hdt.all_vertices_begin();
         vd != hdt.all_vertices_end(); ++vd) {
+//      Rcpp::Rcout << " i: " << index;
+      //vd->id() = index;
       HPointT pt = vd->point();
       Vertices(0, index) = CGAL::to_double(pt.x());
       Vertices(1, index) = CGAL::to_double(pt.y());
-      vd->id() = index;
       index++;
     }
   }
   const size_t nedges = hdt.number_of_hyperbolic_edges();
   Rcpp::IntegerMatrix Edges(2, nedges);
+//  Rcpp::Rcout << " nedges: " << nedges;
   {
     size_t i = 0;
     for(typename HDtT::All_edges_iterator ed = hdt.all_edges_begin();
         ed != hdt.all_edges_end(); ++ed) {
+//      Rcpp::Rcout << " ied: " << i;
       Rcpp::IntegerVector edge_i(2);
       const typename HDtT::Vertex_handle sVertex =
           ed->first->vertex(HDtT::cw(ed->second));

@@ -229,7 +229,7 @@ plotHdelaunay <- function(
   }
   if(vertices){
     if("ivertices" %in% remove){
-      pts <- hdel[["mvertices"]]
+      pts <- pts[hdel[["mvertices"]], ]
     }
     points(pts, pch = 19, cex = 0.9)
   }

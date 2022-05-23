@@ -8,6 +8,13 @@ indices must start from 0. I did the correction.
 I found another to enter the coordinates of the vertices and their index. I 
 hope this will solve the issues spotted by Valgrind.
 
+2022-05-23
+There was a declared but uninitialized (and unused) vector in the C++ code. 
+Perhaps it was the cause of the Valgrind issues. There also was a missing 
+template argument in a function.
+
+**Note:** The latest version of the 'rgl' package has serious issues.
+
 
 ## Testing environments
 

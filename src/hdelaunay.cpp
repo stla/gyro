@@ -46,7 +46,7 @@ Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
   return v;
 }
 
-template <typename HDtT, typename HPointT, typename KernelT>
+template <typename HDtT, typename HPointT, typename NTT>
 Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {
   // std::vector<HPointT> hpts;
@@ -73,8 +73,8 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
 //      Rcpp::Rcout << " i: " << index;
       //vd->id() = index;
       HPointT pt = vd->point();
-      Vertices(0, index) = CGAL::to_double<KernelT::FT>(pt.x());
-      Vertices(1, index) = CGAL::to_double<KernelT::FT>(pt.y());
+      Vertices(0, index) = CGAL::to_double<NTT>(pt.x());
+      Vertices(1, index) = CGAL::to_double<NTT>(pt.y());
       index++;
     }
   }
@@ -125,11 +125,11 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
 // [[Rcpp::export]]
 Rcpp::List hdelaunay_K(const DMatrix points,
                        const bool isolations) {
-  return hdelaunay_cpp<HDt, HPoint, K>(points, isolations);
+  return hdelaunay_cpp<HDt, HPoint, K::FT>(points, isolations);
 }
 
 // [[Rcpp::export]]
 Rcpp::List hdelaunay_EK(const DMatrix points,
                         const bool isolations) {
-  return hdelaunay_cpp<EHDt, EHPoint, EK>(points, isolations);
+  return hdelaunay_cpp<EHDt, EHPoint, EK::FT>(points, isolations);
 }

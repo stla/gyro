@@ -61,7 +61,7 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
   for(unsigned i = 0; i < npoints; i++) {
     const DVector pt = points(Rcpp::_, i);
     vh = hdt.insert(HPointT(pt(0), pt(1)));
-    vh->id() = i;
+    //vh->id() = i;
   }
   //hdt.insert(hpts.begin(), hpts.end());
   DMatrix Vertices(2, hdt.number_of_vertices());
@@ -71,7 +71,7 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
     for(typename HDtT::All_vertices_iterator vd = hdt.all_vertices_begin();
         vd != hdt.all_vertices_end(); ++vd) {
 //      Rcpp::Rcout << " i: " << index;
-      //vd->id() = index;
+      vd->id() = index;
       HPointT pt = vd->point();
       Vertices(0, index) = CGAL::to_double<NTT>(pt.x());
       Vertices(1, index) = CGAL::to_double<NTT>(pt.y());

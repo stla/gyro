@@ -49,21 +49,21 @@ Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
 template <typename HDtT, typename HPointT, typename NTT>
 Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {
-  // std::vector<HPointT> hpts;
+  std::vector<HPointT> hpts;
   const unsigned npoints = points.ncol();
-  // hpts.reserve(npoints);
-  // for(unsigned i = 0; i != npoints; i++) {
-  //   const DVector pt = points(Rcpp::_, i);
-  //   hpts.emplace_back(HPointT(pt(0), pt(1)));
-  // }
-  HDtT hdt;
-  typename HDtT::Vertex_handle vh;
-  for(unsigned i = 0; i < npoints; i++) {
+  hpts.reserve(npoints);
+  for(size_t i = 0; i != npoints; i++) {
     const DVector pt = points(Rcpp::_, i);
-    vh = hdt.insert(HPointT(pt(0), pt(1)));
-    //vh->id() = i;
+    hpts.emplace_back(HPointT(pt(0), pt(1)));
   }
-  //hdt.insert(hpts.begin(), hpts.end());
+  HDtT hdt;
+  // typename HDtT::Vertex_handle vh;
+  // for(unsigned i = 0; i < npoints; i++) {
+  //   const DVector pt = points(Rcpp::_, i);
+  //   vh = hdt.insert(HPointT(pt(0), pt(1)));
+  //   //vh->id() = i;
+  // }
+  hdt.insert(hpts.begin(), hpts.end());
   DMatrix Vertices(2, hdt.number_of_vertices());
 //  Rcpp::Rcout << "nvertices: " << hdt.number_of_vertices();
   {

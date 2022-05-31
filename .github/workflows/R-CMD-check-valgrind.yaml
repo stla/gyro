@@ -19,6 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          sudo apt-get install --yes valgrind
+
       - uses: r-lib/actions/setup-r@v1
         with:
           use-public-rspm: true
@@ -27,4 +33,6 @@ jobs:
         with:
           extra-packages: rcmdcheck
 
-      - uses: r-lib/actions/check-r-package@v1
+      - name: Check with valgrind
+        run: rcmdcheck::rcmdcheck(build_args = "--no-build-vignettes", args = c("--use-valgrind", "--no-manual"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}

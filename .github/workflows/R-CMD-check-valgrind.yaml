@@ -37,3 +37,9 @@ jobs:
       - name: Check with valgrind
         run: rcmdcheck::rcmdcheck(build_args = "--no-build-vignettes", args = c("--use-valgrind", "--no-manual", "--ignore-vignettes"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
+
+      - name: Upload check results
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}-rrelease-results
+          path: check

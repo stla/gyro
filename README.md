@@ -1,8 +1,8 @@
 # gyro: stuff for hyperbolic geometry with R
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/stla/gyro/workflows/R-CMD-check/badge.svg)](https://github.com/stla/gyro/actions)
 [![R-CMD-check](https://github.com/stla/gyro/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/gyro/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check-valgrind](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml/badge.svg)](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml)
 <!-- badges: end -->
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/translatedIcosahedra.gif)

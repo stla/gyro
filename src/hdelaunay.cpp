@@ -56,7 +56,8 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
     const DVector pt = points(Rcpp::_, i);
     hpts.emplace_back(HPointT(pt(0), pt(1)));
   }
-  HDtT hdt(hpts.begin(), hpts.end());
+  HDtT* hdtptr = (HDtT*) malloc(npoints * sizeof(HPointT)); //(hpts.begin(), hpts.end());
+  //typename HDtT::Vertex_handle vh = hdt.push_back(HPointT(points(0, 0), points(1, 0)));
   //CGAL::Euler::reserve(hdt, npoints, 2*npoints - 2, 6*npoints - 6);
   //typename HDtT::Vertex_handle vh;
   // for(unsigned i = 0; i < npoints; i++) {
@@ -66,7 +67,8 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
   //   hdt.insert(x);
   //   //vh->id() = i;
   // }
-//  hdt.insert(hpts.begin(), hpts.end());
+  HDtT hdt = *hdtptr;
+  hdt.insert(hpts.begin(), hpts.end());
   DMatrix Vertices(2, hdt.number_of_vertices());
 //  Rcpp::Rcout << "nvertices: " << hdt.number_of_vertices();
   {

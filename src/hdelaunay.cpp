@@ -118,7 +118,7 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
     std::vector<int> v(Faces.begin(), Faces.end());
     std::sort(v.begin(), v.end());
     auto last = std::unique(v.begin(), v.end());
-    v.erase(last, v.end())
+    v.erase(last, v.end());
     Rcpp::IntegerVector mVertices(v.begin(), v.end());
     //Rcpp::IntegerVector mVertices = unique(Faces);
     //mVertices.sort(false);

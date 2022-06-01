@@ -46,6 +46,17 @@ Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
   return v;
 }
 
+// [[Rcpp::export]]
+int htest(){
+  HDt hdt;
+  hdt.insert(HPoint(0.1, 0.1));
+  hdt.insert(HPoint(0.8, 0.2));
+  hdt.insert(HPoint(0.4, 0.6));
+  hdt.insert(HPoint(-0.5, -0.5));
+  return 0;
+} 
+
+
 template <typename HDtT, typename HPointT, typename NTT>
 Rcpp::List hdelaunay_cpp(const DMatrix points,
                          const bool isolations) {

@@ -17,6 +17,10 @@ Mgyrosegment_cpp <- function(A, B, s, n) {
     .Call(`_gyro_Mgyrosegment_cpp`, A, B, s, n)
 }
 
+htest <- function() {
+    .Call(`_gyro_htest`)
+}
+
 hdelaunay_K <- function(points, isolations) {
     .Call(`_gyro_hdelaunay_K`, points, isolations)
 }

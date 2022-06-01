@@ -1,3 +1,5 @@
+Htest <- function() htest()
+
 #' @useDynLib gyro, .registration=TRUE
 #' @importFrom Rcpp evalCpp
 NULL
@@ -38,6 +40,7 @@ NULL
 #'
 #' @examples
 #' library(gyro)
+#' Htest()
 #' library(uniformly)
 #' set.seed(666)
 #' points <- runif_in_sphere(10L, d = 2)

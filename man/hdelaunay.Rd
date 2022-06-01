@@ -44,6 +44,7 @@ This function uses the C++ library CGAL. As graphs, the hyperbolic
 }
 \examples{
 library(gyro)
+Htest()
 library(uniformly)
 set.seed(666)
 points <- runif_in_sphere(10L, d = 2)

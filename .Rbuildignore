@@ -6,3 +6,5 @@
 ^inst/trash$
 ^CRAN-SUBMISSION$
 ^inst/essais$
+^\.settings$
+^\.project$

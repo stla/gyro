@@ -27,34 +27,33 @@ typedef CGAL::Triangulation_data_structure_2<
 typedef CGAL::Hyperbolic_Delaunay_triangulation_2<HDtt, HTds> HDt;
 typedef CGAL::Hyperbolic_Delaunay_triangulation_2<EHDtt, EHTds> EHDt;
 
-Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
-  size_t s = v.size();
-  if(s == 0 || s == 1) {
-    return v;
-  }
-  for(size_t i = 0; i < s - 1; i++) {
-    size_t j = i + 1;
-    while(j < s) {
-      if(v(i) == v(j)) {
-        v.erase(v.begin() + j);
-        s--;
-      } else {
-        j++;
-      }
-    }
-  }
-  return v;
-}
+// Rcpp::IntegerVector unique(Rcpp::IntegerVector v) {
+//   size_t s = v.size();
+//   if(s == 0 || s == 1) {
+//     return v;
+//   }
+//   for(size_t i = 0; i < s - 1; i++) {
+//     size_t j = i + 1;
+//     while(j < s) {
+//       if(v(i) == v(j)) {
+//         v.erase(v.begin() + j);
+//         s--;
+//       } else {
+//         j++;
+//       }
+//     }
+//   }
+//   return v;
+// }
 
-// [[Rcpp::export]]
-int htest(){
-  HDt hdt;
-  hdt.insert(HPoint(0.1, 0.1));
-  hdt.insert(HPoint(0.8, 0.2));
-  hdt.insert(HPoint(0.4, 0.6));
-  hdt.insert(HPoint(-0.5, -0.5));
-  return 0;
-} 
+// int htest(){
+//   HDt hdt;
+//   hdt.insert(HPoint(0.1, 0.1));
+//   hdt.insert(HPoint(0.8, 0.2));
+//   hdt.insert(HPoint(0.4, 0.6));
+//   hdt.insert(HPoint(-0.5, -0.5));
+//   return 0;
+// } 
 
 
 template <typename HDtT, typename HPointT, typename NTT>
@@ -67,17 +66,18 @@ Rcpp::List hdelaunay_cpp(const DMatrix points,
     const DVector pt = points(Rcpp::_, i);
     hpts.emplace_back(HPointT(pt(0), pt(1)));
   }
-  std::vector<HPointT> x(0);
-  HDtT hdt(x.begin(), x.end());
+  HDtT hdt;
+  // std::vector<HPointT> x(0);
+  // HDtT hdt(x.begin(), x.end());
   //HDtT* hdtptr = (HDtT*) malloc(sizeof(HDtT)); //(hpts.begin(), hpts.end());
   //typename HDtT::Vertex_handle vh = hdt.push_back(HPointT(points(0, 0), points(1, 0)));
   //CGAL::Euler::reserve(hdt, npoints, 2*npoints - 2, 6*npoints - 6);
   //typename HDtT::Vertex_handle vh;
   for(unsigned i = 0; i < npoints; i++) {
-    const DVector pt = points(Rcpp::_, i);
-    HPointT pp = HPointT(pt(0), pt(1));
+    const DVector ptrcpp = points(Rcpp::_, i);
+    const HPointT pt = HPointT(ptrcpp(0), ptrcpp(1));
     //vh = 
-    hdt.insert(pp);
+    hdt.insert(pt);
     //vh->id() = i;
   }
   //HDtT hdt = *hdtptr;

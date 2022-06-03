@@ -11,3 +11,5 @@ makedoc <- function(){
 myinstall <- function(){
   withr::with_libpaths("C:/SL/Rloclib", devtools::install(quick = TRUE))
 }
+
+loadgyro <- function() library(gyro, lib.loc = "C:/SL/Rloclib")

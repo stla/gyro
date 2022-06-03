@@ -66,16 +66,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// htest
-int htest();
-RcppExport SEXP _gyro_htest() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(htest());
-    return rcpp_result_gen;
-END_RCPP
-}
 // hdelaunay_K
 Rcpp::List hdelaunay_K(const DMatrix points, const bool isolations);
 RcppExport SEXP _gyro_hdelaunay_K(SEXP pointsSEXP, SEXP isolationsSEXP) {
@@ -106,7 +96,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_gyro_Mgyroscalar_cpp", (DL_FUNC) &_gyro_Mgyroscalar_cpp, 3},
     {"_gyro_MgyroABt_cpp", (DL_FUNC) &_gyro_MgyroABt_cpp, 4},
     {"_gyro_Mgyrosegment_cpp", (DL_FUNC) &_gyro_Mgyrosegment_cpp, 4},
-    {"_gyro_htest", (DL_FUNC) &_gyro_htest, 0},
     {"_gyro_hdelaunay_K", (DL_FUNC) &_gyro_hdelaunay_K, 2},
     {"_gyro_hdelaunay_EK", (DL_FUNC) &_gyro_hdelaunay_EK, 2},
     {NULL, NULL, 0}

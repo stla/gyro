@@ -1,5 +1,3 @@
-Htest <- function() htest()
-
 #' @useDynLib gyro, .registration=TRUE
 #' @importFrom Rcpp evalCpp
 NULL

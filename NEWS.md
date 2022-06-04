@@ -1,6 +1,6 @@
-# gyro 1.0.1 (2022-06-06)
+# gyro 1.0.1 (2022-05-17)
 
-Removed the `hdelaunay` function because of an issue spotted by Valgrind.
+No change for the user.
 
 
 # gyro 1.0.0 (2022-05-16)

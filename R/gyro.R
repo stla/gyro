@@ -1,3 +1,7 @@
+#' @useDynLib gyro, .registration=TRUE
+#' @importFrom Rcpp evalCpp
+NULL
+
 gammaF <- function(A, s){
   1 / sqrt(1 - dotprod(A)/(s*s))
 }

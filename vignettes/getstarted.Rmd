@@ -56,6 +56,4 @@ polyhedra. Finally you can also use the R package
 [Rpolyhedra](https://CRAN.R-project.org/package=Rpolyhedra). 
 
 The **gyro** package also offers the `tiling` function to plot hyperbolic 
-tilings of the Poincaré disk, and the `hdelaunay` function to construct 
-hyperbolic Delaunay triangulations of the Poincaré disk. They are constructed 
-with the C++ library **CGAL**.
+tilings of the Poincaré disk.

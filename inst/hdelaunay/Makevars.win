@@ -4,7 +4,8 @@
 
 ## With R 3.1.0 or later, you can uncomment the following line to tell R to
 ## enable compilation with C++11 (or even C++14) where available
-CXX_STD = CXX11
-PKG_CXXFLAGS = -Wfatal-errors
+CXX_STD = CXX14
+PKG_LIBS = -lmpfr -lgmp
+PKG_CXXFLAGS = -DCGAL_HEADER_ONLY=1 -Wno-ignored-attributes -Wfatal-errors -g
 #PKG_CPPFLAGS=-UNDEBUG
 

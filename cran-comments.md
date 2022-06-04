@@ -1,20 +1,8 @@
-2022-05-18
-Valgrind detected some errors in the previous version. There's a 'vertex' type 
-in my code to which one has to associate some indices. I associated indices 
-starting from 1. My guess is that this is the cause of the errors and the 
-indices must start from 0. I did the correction.
-
-2022-05-20
-I found another to enter the coordinates of the vertices and their index. I 
-hope this will solve the issues spotted by Valgrind.
-
-2022-05-23
-There was a declared but uninitialized (and unused) vector in the C++ code. 
-Perhaps it was the cause of the Valgrind issues. There also was a missing 
-template argument in a function.
-
-**Note:** The latest version of the 'rgl' package has serious issues.
-
+The previous submission has been archived because of an issue spotted by Valgrind 
+(triggered by a call to the 'hdelaunay' function). 
+Actually, my C++ code is correct: this issue occurs because of the CGAL library, 
+not because of my code. So, I have no way to fix it, and then I removed the 'hdelaunay' 
+function from the package. Now the package does not use CGAL. 
 
 ## Testing environments
 

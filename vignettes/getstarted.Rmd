@@ -50,7 +50,7 @@ the polyhedron is convex (in the Euclidean space), use `plotGyrohull3d` to
 quickly draw it. Otherwise you need to know the faces of the polyhedron, and 
 they are given on the [dmccooey](http://dmccooey.com/polyhedra/index.html) 
 website. From the faces you can derive the edges. See `gyrodemos()` for some 
-examples. The [eusebeia](https://eusebeia.dyndns.org/4d/index) website is 
+examples. The [eusebeia](https://www.qfbox.info/4d/index) website is 
 another resource to find the Cartesian coordinates of the vertices of some 
 polyhedra. Finally you can also use the R package 
 [Rpolyhedra](https://CRAN.R-project.org/package=Rpolyhedra). 

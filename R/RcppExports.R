@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 Mgyroadd_cpp <- function(X, Y, s) {
-    .Call('_gyro_Mgyroadd_cpp', PACKAGE = 'gyro', X, Y, s)
+    .Call(`_gyro_Mgyroadd_cpp`, X, Y, s)
 }
 
 Mgyroscalar_cpp <- function(r, X, s) {
-    .Call('_gyro_Mgyroscalar_cpp', PACKAGE = 'gyro', r, X, s)
+    .Call(`_gyro_Mgyroscalar_cpp`, r, X, s)
 }
 
 MgyroABt_cpp <- function(A, B, t, s) {
-    .Call('_gyro_MgyroABt_cpp', PACKAGE = 'gyro', A, B, t, s)
+    .Call(`_gyro_MgyroABt_cpp`, A, B, t, s)
 }
 
 Mgyrosegment_cpp <- function(A, B, s, n) {
-    .Call('_gyro_Mgyrosegment_cpp', PACKAGE = 'gyro', A, B, s, n)
+    .Call(`_gyro_Mgyrosegment_cpp`, A, B, s, n)
 }
 

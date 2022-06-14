@@ -38,3 +38,6 @@ dotprod <- function(x, y = NULL){
   c(crossprod(x, y))
 }
 
+distance <- function(A, B){
+  sqrt(c(crossprod(B - A)))
+}

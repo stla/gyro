@@ -60,7 +60,7 @@ PhiUM <- function(A, s = 1){
       call. = TRUE
     )
   }
-  PhiUE(PhiEM(A, s), s)
+  .PhiUM(A, s)
 }
 
 #' @title Isomorphism from Ungar gyrovector space to Möbius gyrovector space

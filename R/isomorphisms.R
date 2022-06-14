@@ -15,3 +15,7 @@ PhiME <- function(A, s){
   gamm <- gammaF(A, s)
   gamm * A / (1 + gamm)
 }
+
+.PhiUM <- function(A, s){
+  PhiUE(PhiEM(A, s), s)
+}

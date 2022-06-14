@@ -1,3 +1,8 @@
+# gyro 1.0.1.9000 (2022-06-14)
+
+- Function `gyrocentroid`.
+
+
 # gyro 1.0.1 (2022-06-08)
 
 Removed the `hdelaunay` function because of an issue spotted by Valgrind.

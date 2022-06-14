@@ -1,41 +1,3 @@
-gammaF <- function(A, s){
-  1 / sqrt(1 - dotprod(A)/(s*s))
-}
-
-betaF <- function(A, s) 1 / sqrt(1 + dotprod(A)/(s*s))
-
-Ugyroadd <- function(A, B, s){
-  betaA <- betaF(A, s)
-  betaB <- betaF(B, s)
-  (1 + betaA/(1+betaA) * dotprod(A, B)/(s*s) + (1-betaB)/betaB) * A + B
-}
-
-Mgyroadd <- function(X, Y, s){
-  s2 <- s * s
-  x <- dotprod(X) / s2
-  y <- dotprod(Y) / s2
-  xy <- 2 * dotprod(X, Y) / s2
-  ((1 + xy + y) * X + (1 - x) * Y) / (1 + xy + x*y)
-}
-
-Ugyroscalar <- function(r, A, s){
-  h <- sqrt(dotprod(A)) / s
-  sinh(r*asinh(h)) * A / h
-}
-
-Mgyroscalar <- function(r, X, s){
-  Xnorm <- sqrt(dotprod(X))
-  s / Xnorm * tanh(r * atanh(Xnorm / s)) * X
-}
-
-UgyroABt <- function(A, B, t, s){
-  Ugyroadd(A, Ugyroscalar(t, Ugyroadd(-A, B, s), s), s)
-}
-
-MgyroABt <- function(A, B, t, s){
-  Mgyroadd(A, Mgyroscalar(t, Mgyroadd(-A, B, s), s), s)
-}
-
 #' @title Point on a gyroline
 #' @description Point of coordinate \code{t} on the gyroline passing through
 #'   two given points \code{A} and \code{B}. This is \code{A} for \code{t=0}
@@ -62,7 +24,8 @@ gyroABt <- function(A, B, t, s = 1, model = "U"){
   stopifnot(isNumber(t))
   stopifnot(areDistinct(A, B))
   if(model == "M"){
-    if(dotprod(A) >= s || dotprod(B) >= s){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2){
       stop(
         "In the M\u00f6bius gyrovector space, points must be ",
         "strictly inside the centered ball of radius `s`.",
@@ -73,19 +36,6 @@ gyroABt <- function(A, B, t, s = 1, model = "U"){
   }else{
     UgyroABt(A, B, t, s)
   }
-}
-
-PhiUE <- function(A, s){
-  gammaF(A, s) * A
-}
-
-PhiEU <- function(A, s){
-  betaF(A, s) * A
-}
-
-PhiEM <- function(A, s){
-  x <- dotprod(A) / s / s
-  2 * A / (1 + x)
 }
 
 #' @title Isomorphism from Möbius gyrovector space to Ungar gyrovector space
@@ -103,7 +53,7 @@ PhiEM <- function(A, s){
 PhiUM <- function(A, s = 1){
   stopifnot(isPoint(A))
   stopifnot(isPositiveNumber(s))
-  if(dotprod(A) >= s){
+  if(dotprod(A) >= s*s){
     stop(
       "In the M\u00f6bius gyrovector space, points must be ",
       "strictly inside the centered ball of radius `s`.",
@@ -111,11 +61,6 @@ PhiUM <- function(A, s = 1){
     )
   }
   PhiUE(PhiEM(A, s), s)
-}
-
-PhiME <- function(A, s){
-  gamm <- gammaF(A, s)
-  gamm * A / (1 + gamm)
 }
 
 #' @title Isomorphism from Ungar gyrovector space to Möbius gyrovector space
@@ -136,27 +81,6 @@ PhiMU <- function(A, s = 1){
   stopifnot(isPositiveNumber(s))
   PhiME(PhiEU(A, s), s)
 }
-
-Egyromidpoint <- function(A, B, s){
-  gA <- gammaF(A, s); gB <- gammaF(B, s)
-  (gA*A + gB*B) / (gA + gB)
-}
-
-Ugyromidpoint <- function(A, B, s){
-  PhiUE(Egyromidpoint(PhiEU(A, s), PhiEU(B, s), s), s)
-}
-
-Mgyromidpoint <- function(A, B, s){
-  PhiME(Egyromidpoint(PhiEM(A, s), PhiEM(B, s), s), s)
-}
-
-# Ugyromidpoint <- function(A, B, s){
-#   UgyroABt(A, B, 0.5, s)
-# }
-#
-# Mgyromidpoint <- function(A, B, s){
-#   MgyroABt(A, B, 0.5, s)
-# }
 
 #' @title Gyromidpoint
 #' @description The gyromidpoint of a \code{\link{gyrosegment}}.
@@ -183,7 +107,8 @@ gyromidpoint <- function(A, B, s = 1, model = "U"){
   stopifnot(isPositiveNumber(s))
   stopifnot(areDistinct(A, B))
   if(model == "M"){
-    if(dotprod(A) >= s || dotprod(B) >= s){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2){
       stop(
         "In the M\u00f6bius gyrovector space, points must be ",
         "strictly inside the centered ball of radius `s`.",
@@ -194,19 +119,6 @@ gyromidpoint <- function(A, B, s = 1, model = "U"){
   }else{
     Ugyromidpoint(A, B, s)
   }
-}
-
-Ugyrosegment <- function(A, B, s, n){
-  t(vapply(seq(0, 1, length.out = n), function(t){
-    UgyroABt(A, B, t, s)
-  }, numeric(length(A))))
-}
-
-Mgyrosegment <- function(A, B, s, n){
-  t(Mgyrosegment_cpp(A, B, s, n))
-  # t(vapply(seq(0, 1, length.out = n), function(t){
-  #   MgyroABt(A, B, t, s)
-  # }, numeric(length(A))))
 }
 
 #' @title Gyrosegment
@@ -286,7 +198,8 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
   stopifnot(n >= 2)
   stopifnot(areDistinct(A, B))
   if(model == "M"){
-    if(dotprod(A) >= s || dotprod(B) >= s){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2){
       stop(
         "In the M\u00f6bius gyrovector space, points must be ",
         "strictly inside the centered ball of radius `s`.",
@@ -350,7 +263,8 @@ gyrotube <- function(
   stopifnot(isPositiveInteger(sides))
   stopifnot(isBoolean(caps))
   if(model == "M"){
-    if(dotprod(A) >= s || dotprod(B) >= s){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2){
       stop(
         "In the M\u00f6bius gyrovector space, points must be ",
         "strictly inside the centered ball of radius `s`.",
@@ -365,55 +279,39 @@ gyrotube <- function(
   cylinder3d(points, radius = radius, sides = sides, closed = closed)
 }
 
-Ugyrosubdiv <- function(A1, A2, A3, s){
-  M12 <- Ugyromidpoint(A1, A2, s)
-  M13 <- Ugyromidpoint(A1, A3, s)
-  M23 <- Ugyromidpoint(A2, A3, s)
-  list(
-    list(A1, M12, M13),
-    list(A2, M23, M12),
-    list(A3, M13, M23),
-    list(M12, M13, M23)
-  )
-}
-
-Mgyrosubdiv <- function(A1, A2, A3, s){
-  M12 <- Mgyromidpoint(A1, A2, s)
-  M13 <- Mgyromidpoint(A1, A3, s)
-  M23 <- Mgyromidpoint(A2, A3, s)
-  list(
-    list(A1, M12, M13),
-    list(A2, M23, M12),
-    list(A3, M13, M23),
-    list(M12, M13, M23)
-  )
-}
-
-Egyrocentroid <- function(A, B, C, s){
-  gA <- gammaF(A, s); gB <- gammaF(B, s); gC <- gammaF(C, s)
-  (gA*A + gB*B + gC*C) / (gA + gB + gC)
-}
-
-Ugyrocentroid <- function(A, B, C, s){
-  PhiUE(Egyrocentroid(PhiEU(A, s), PhiEU(B, s), PhiEU(C, s), s), s)
-}
-
-Mgyrocentroid <- function(A, B, C, s){
-  s2 <- s * s
-  gA2 <- 1 / (1 - dotprod(A)/s2)
-  gB2 <- 1 / (1 - dotprod(B)/s2)
-  gC2 <- 1 / (1 - dotprod(C)/s2)
-  if(
-    gA2 < 0 || gB2 < 0 || gC2 < 0 ||
-    is.infinite(gA2) || is.infinite(gB2) || is.infinite(gC2)
-  ){
-    stop(
-      "In the M\u00f6bius gyrovector space, points must be ",
-      "strictly inside the centered ball of radius `s`.",
-      call. = FALSE
-    )
+#' @title Gyrocentroid
+#' @description Gyrocenroid of a triangle.
+#'
+#' @encoding UTF-8
+#'
+#' @param A,B,C three distinct points
+#' @param s positive number, the radius of the Poincaré ball if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature (the smaller, the more curved)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#'
+#' @return A point, the gyrocentroid of the triangle \code{ABC}.
+#' @export
+gyrocentroid <- function(A, B, C, s = 1, model = "U"){
+  model <- match.arg(model, c("M", "U"))
+  stopifnot(isPositiveNumber(s))
+  stopifnot(isPoint(A))
+  stopifnot(isPoint(B))
+  stopifnot(isPoint(C))
+  if(model == "M"){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2 || dotprod(C) >= s2){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
+    Mgyrocentroid(A, B, C, s)
+  }else{
+    Ugyrocentroid(A, B, C, s)
   }
-  Mgyroscalar(0.5, (gA2*A + gB2*B + gC2*C) / (gA2 + gB2 + gC2 - 1.5), s)
 }
 
 #' @title Gyrotriangle in 3D space
@@ -494,8 +392,13 @@ gyrotriangle <- function(
     palette = NULL, bias = 1, interpolate = "linear", g = identity
 ){
   model <- match.arg(model, c("M", "U"))
+  stopifnot(isPositiveNumber(s))
+  stopifnot(is3dPoint(A))
+  stopifnot(is3dPoint(B))
+  stopifnot(is3dPoint(C))
   if(model == "M"){
-    if(dotprod(A) >= s || dotprod(B) >= s || dotprod(C) >= s){
+    s2 <- s * s
+    if(dotprod(A) >= s2 || dotprod(B) >= s2 || dotprod(C) >= s2){
       stop(
         "In the M\u00f6bius gyrovector space, points must be ",
         "strictly inside the centered ball of radius `s`.",
@@ -545,94 +448,4 @@ gyrotriangle <- function(
     mesh[["material"]] = list(color = colors)
   }
   mesh
-}
-
-#' @title Examples of the 'gyro' package
-#' @description Some examples of hyperbolic polyhedra realized with the 'gyro'
-#'   package.
-#'
-#' @return No value. The function firstly copies the demo files in a
-#'   temporary directory. If you use RStudio, the function opens these files.
-#'   Otherwise it prints a message giving the instructions to access to these
-#'   files.
-#'
-#' @note The \emph{BarthLike} file has this name because the figure it
-#'   generates looks like the Barth sextic (drawing by Patrice Jeener):
-#'
-#' \if{html}{
-#'
-#'   \out{<div style="text-align: center">}\figure{SextiqueDeBarth.png}{options: style="max-width:75\%;"}\out{</div>}
-#'
-#' }
-#' \if{latex}{
-#'
-#'   \out{\begin{center}}\figure{SextiqueDeBarth.png}\out{\end{center}}
-#'
-#' }
-#' @export
-#'
-#' @importFrom rstudioapi isAvailable navigateToFile
-#' @importFrom clipr clipr_available write_clip
-gyrodemos <- function(){
-  folder <- system.file("gyrodemos", package = "gyro")
-  tmpdir <- file.path(tempdir(), "gyrodemos")
-  dir.create(tmpdir)
-  files <- list.files(folder)
-  tmpfiles <- file.path(tmpdir, files)
-  invisible(file.copy(file.path(folder, files), tmpfiles))
-  if(isAvailable(version_needed = "0.99.719")){
-    invisible(sapply(tmpfiles, navigateToFile))
-    message(sprintf("Opened files: %s.", toString(files)))
-  }else{
-    line <- sprintf(
-      'wd <- setwd("%s")\n',
-      normalizePath(tmpdir, winslash = "/")
-    )
-    message(
-      "Copy the following line to go to the demos folder:\n",
-      line,
-      "Type `setwd(wd)` to come back."
-    )
-    if(clipr_available()){
-      write_clip(line)
-      message("The line has been copied to the clipboard.")
-    }
-  }
-}
-
-#' @title Changes of sign
-#' @description Sometimes, the coordinates of the vertices of a polyhedron are
-#'   given with changes of sign (with a symbol \strong{+/-}). This function
-#'   performs the changes of sign.
-#'
-#' @param M a numeric matrix of coordinates of some points (one point per row)
-#' @param changes either the indices of the columns of \code{M} where the
-#'   changes of sign must be done, or \code{"all"} to select all the indices
-#'
-#' @return A numeric matrix, \code{M} transformed by the changes of sign.
-#' @export
-#'
-#' @importFrom purrr imap
-#'
-#' @examples library(gyro)
-#' library(rgl)
-#' ## ~~ rhombicosidodecahedron ~~##
-#' phi <- (1 + sqrt(5)) / 2
-#' vs1 <- rbind(
-#'   c(1, 1, phi^3),
-#'   c(phi^2, phi, 2 * phi),
-#'   c(2 + phi, 0, phi^2)
-#' )
-#' vs2 <- rbind(vs1, vs1[, c(2, 3, 1)], vs1[, c(3, 1, 2)]) # even permutations
-#' vs <- changesOfSign(vs2)
-#' \donttest{open3d(windowRect = c(50, 50, 562, 562), zoom = 0.65)
-#' plotGyrohull3d(vs)}
-changesOfSign <- function(M, changes = "all"){
-  if(!is.matrix(M)) M <- rbind(M)
-  if(identical(changes, "all")) changes <- 1L:ncol(M)
-  `colnames<-`(as.matrix(do.call(rbind, apply(M, 1L, function(row){
-    expand.grid(
-      imap(row, ~ (if(.x == 0 || !.y %in% changes) .x else c(-.x, .x)))
-    )
-  }))), NULL)
 }

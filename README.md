@@ -41,6 +41,8 @@
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/Uhdelaunay.png)
 
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/hdelaunayU.png)
+
 
 ## License
 

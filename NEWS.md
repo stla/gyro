@@ -1,8 +1,8 @@
-# gyro 1.0.1.9000 (2022-06-14)
+# gyro 1.1.0 (2022-07-20)
 
 - Function `gyrocentroid`.
 
-- Hyperbolic Delaunay triangulation (`hdelaunay`)
+- Hyperbolic Delaunay triangulation (`hdelaunay`).
 
 
 # gyro 1.0.1 (2022-06-08)

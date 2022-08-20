@@ -1,3 +1,8 @@
+# gyro 1.1.1 (2022-08-20)
+
+Minor fix in the documentation.
+
+
 # gyro 1.1.0 (2022-07-20)
 
 - Function `gyrocentroid`.

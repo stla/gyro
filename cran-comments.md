@@ -1,6 +1,6 @@
 ## Testing environments
 
-- Local R-4.2.1 on Windows 10
+- Local R-4.2.1 on Linux Mint 20.3
 - win-builder devel
 - mac-builder
 - Ubuntu 20 via Github action

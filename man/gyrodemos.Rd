@@ -22,7 +22,7 @@ The \emph{BarthLike} file has this name because the figure it
 
 \if{html}{
 
-  \out{<div style="text-align: center">}\figure{SextiqueDeBarth.png}{options: style="max-width:75\%;"}\out{</div>}
+  \figure{SextiqueDeBarth.png}{options: style="max-width:75\%; display: block; text-align: center;"}
 
 }
 \if{latex}{

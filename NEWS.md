@@ -1,3 +1,9 @@
+# gyro 1.2.0 (2023-07-01)
+
+New function `plotGyroMesh`, to quickly plot the hyperbolic version of a 
+triangle mesh.
+
+
 # gyro 1.1.1 (2022-08-20)
 
 Minor fix in the documentation.

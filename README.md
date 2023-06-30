@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/stla/gyro/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/gyro/actions/workflows/R-CMD-check.yaml)
-[![R-CMD-check-valgrind](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml/badge.svg)](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml)
+[![R-CMD-check-with-valgrind](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml/badge.svg)](https://github.com/stla/gyro/actions/workflows/R-CMD-check-valgrind.yaml)
 <!-- badges: end -->
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/translatedIcosahedra.gif)

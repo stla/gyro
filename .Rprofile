@@ -4,12 +4,23 @@ dllunload <- function(){
   )
 }
 
-makedoc <- function(){
-  roxygen2::roxygenise(load_code = roxygen2::load_installed)
+myinstall <- function() {
+  dllunload()
+  if(rstudioapi::isAvailable()) {
+    rstudioapi::restartSession(
+      "devtools::install(quick = TRUE, keep_source = TRUE)"
+    )
+  } else {
+    devtools::install(quick = TRUE, keep_source = TRUE)
+  }
 }
 
-myinstall <- function(){
-  withr::with_libpaths("C:/SL/Rloclib", devtools::install(quick = TRUE))
+mydocument <- function() {
+  if(rstudioapi::isAvailable()) {
+    rstudioapi::restartSession(
+      "roxygen2::roxygenise(load_code = roxygen2::load_installed)" 
+    )
+  } else {
+    roxygen2::roxygenise(load_code = roxygen2::load_installed)
+  }
 }
-
-loadgyro <- function() library(gyro, lib.loc = "C:/SL/Rloclib")

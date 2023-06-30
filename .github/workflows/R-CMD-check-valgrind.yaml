@@ -17,7 +17,7 @@ jobs:
       RGL_USE_NULL: TRUE
       _R_CHECK_USE_VALGRIND_: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install system dependencies
         env:
@@ -35,7 +35,7 @@ jobs:
           needs: check
 
       - name: Check with valgrind
-        run: rcmdcheck::rcmdcheck(build_args = "--no-build-vignettes", args = c("--use-valgrind", "--no-manual", "--ignore-vignettes"), error_on = "error", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(build_args = "--no-build-vignettes", args = c("--use-valgrind", "--no-manual", "--ignore-vignettes"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results

@@ -232,3 +232,151 @@ plotGyrohull3d <- function(
   }
   invisible(NULL)
 }
+
+
+#' @title Plot hyperbolic mesh
+#' @description Plot the hyperbolic version of a triangle 3D mesh.
+#'
+#' @encoding UTF-8
+#'
+#' @param mesh there are two possibilities for this argument; it can be a
+#'   triangle \strong{rgl} mesh (class \code{mesh3d}) or a list with (at least)
+#'   two fields: \code{vertices}, a numeric matrix with three columns, and
+#'   \code{faces}, an integer matrix with three columns
+#' @param s positive number, the radius of the Poincaré ball if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature (the smaller, the more curved)
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param iterations argument passed to \code{\link{gyrotriangle}}
+#' @param n argument passed to \code{\link{gyrotube}} or
+#'   \code{\link{gyrosegment}}, the number of points for each edge
+#' @param edges Boolean, whether to plot the edges (as tubes or as lines)
+#' @param edgesAsTubes Boolean, whether to plot tubular edges; if \code{FALSE},
+#'   the edges are plotted as lines
+#' @param edgesColor a color for the edges
+#' @param tubesRadius radius of the tubes, if \code{edgesAsTubes = TRUE}
+#' @param verticesAsSpheres Boolean, whether to plot the vertices as
+#'   spheres; if \code{FALSE}, the vertices are not plotted
+#' @param spheresColor a color for the spheres, if
+#'   \code{verticesAsSpheres = TRUE}
+#' @param spheresRadius radius of the spheres,
+#'   if \code{verticesAsSpheres = TRUE}
+#' @param facesColor this argument sets the color of the faces; it can be
+#'   either a single color or a color palette, i.e. a vector of colors; if it
+#'   is a color palette, it will be passed to the argument \code{palette} of
+#'   \code{\link{gyrotriangle}}
+#' @param bias,interpolate,g these arguments are passed to
+#'   \code{\link{gyrotriangle}} in the case when \code{facesColor} is a color
+#'   palette
+#'
+#' @return No value, called for plotting.
+#' @export
+#'
+#' @importFrom rgl tmesh3d shade3d spheres3d lines3d
+#' @importFrom Morpho mergeMeshes
+#' @importFrom Rvcg vcgClean vcgGetEdge
+#'
+#' @examples # hyperbolic great stellated dodecahedron
+#' library(gyro)
+#' library(rgl)
+#' GSD <- system.file(
+#'   "extdata", "greatStellatedDodecahedron.ply", package = "gyro"
+#' )
+#' mesh <- Rvcg::vcgPlyRead(GSD, updateNormals = FALSE, clean = FALSE)
+#' \donttest{open3d(windowRect = c(50, 50, 562, 562), zoom = 0.7)
+#' plotGyroMesh(
+#'   mesh,
+#'   edgesAsTubes = FALSE, edgesColor = "black",
+#'   facesColor = "firebrick1"
+#' )}
+plotGyroMesh <- function(
+    mesh, s = 1, model = "U", iterations = 5, n = 100, edges = TRUE,
+    edgesAsTubes = TRUE, edgesColor = "yellow", tubesRadius = 0.03,
+    verticesAsSpheres = edgesAsTubes, spheresColor = edgesColor,
+    spheresRadius = 0.05,
+    facesColor = "navy", bias = 1, interpolate = "linear", g = identity
+){
+  if(!inherits(mesh, "mesh3d")) {
+    stopifnot("vertices" %in% names(mesh), "faces" %in% names(mesh))
+    mesh <- tmesh3d(
+      vertices = t(mesh[["vertices"]]),
+      indices  = t(mesh[["faces"]]),
+      homogeneous = FALSE
+    )
+  }
+  Vertices <- mesh[["vb"]][-4L, ]
+  Triangles <- mesh[["it"]]
+  Edges <- as.matrix(vcgGetEdge(mesh)[, c(1L, 2L)])
+  model <- match.arg(model, c("M", "U"))
+  if(model == "M"){
+    snorms <- apply(points, 1L, dotprod)
+    if(any(snorms >= s)){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
+  }
+
+  stopifnot(isBoolean(edges))
+  stopifnot(isBoolean(edgesAsTubes))
+  stopifnot(isBoolean(verticesAsSpheres))
+
+  ntriangles <- ncol(Triangles)
+  Gtriangles <- vector("list", ntriangles)
+  palette <- if(length(facesColor) > 1L) facesColor
+  for(i in 1L:ntriangles){
+    triangle <- Vertices[, Triangles[, i]]
+    Gtriangles[[i]] <- gyrotriangle(
+      triangle[, 1L], triangle[, 2L], triangle[, 3L],
+      s = s, model = model, iterations = iterations, palette = palette,
+      bias = bias, interpolate = interpolate, g = g
+    )
+  }
+  mesh <- vcgClean(mergeMeshes(Gtriangles), sel = 0, silent = TRUE)
+
+  if(is.null(palette)) {
+    shade3d(mesh, color = facesColor, polygon_offset = 1)
+  } else {
+    shade3d(mesh, meshColor = "vertices", polygon_offset = 1)
+  }
+
+  if(edges) {
+    if(edgesAsTubes) {
+      for(i in 1L:nrow(Edges))  {
+        edge <- Edges[i, ]
+        gtube <- gyrotube(
+          Vertices[, edge[1L]], Vertices[, edge[2L]], s = s, model = model,
+          n = n, radius = tubesRadius
+        )
+        shade3d(gtube, color = edgesColor)
+      }
+    } else {
+      if(model == "M") {
+        for(i in 1L:nrow(Edges)){
+          edge <- Edges[i, ]
+          gsegment <- Mgyrosegment(
+            Vertices[, edge[1L]], Vertices[, edge[2L]], s = s, n = n
+          )
+          lines3d(gsegment, color = edgesColor, lwd = 2, line_antialias = TRUE)
+        }
+      } else {
+        for(i in 1L:nrow(Edges)) {
+          edge <- Edges[i, ]
+          gsegment <- Ugyrosegment(
+            Vertices[, edge[1L]], Vertices[, edge[2L]], s = s, n = n
+          )
+          lines3d(gsegment, color = edgesColor, lwd = 2, line_antialias = TRUE)
+        }
+      }
+    }
+  }
+
+  if(verticesAsSpheres) {
+    spheres3d(t(Vertices), radius = spheresRadius, color = spheresColor)
+  }
+
+  invisible(NULL)
+}

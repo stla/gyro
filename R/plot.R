@@ -13,7 +13,7 @@
   return(list(vertices = Vertices, edges = Edges, triangles = Triangles))
 }
 
-#' @title Hyperbolic convex hull
+#' @title Plot hyperbolic convex hull
 #' @description Plot the hyperbolic convex hull of a set of 3D points.
 #'
 #' @encoding UTF-8
@@ -150,14 +150,22 @@
 #' plotGyrohull3d(vertices, s)}
 #'
 #' # an example of color palette ####
-#' library(trekcolors)
-#' library(uniformly)
-#' set.seed(666)
-#' points <- runif_on_sphere(50, d = 3)
+#' if(require("trekcolors")) {
+#'   pal <- trek_pal("lcars_series")
+#' } else {
+#'   pal <- hcl.colors(32L, palette = "Rocket")
+#' }
+#' set.seed(666) # 50 random points on sphere
+#' if(require("uniformly")) {
+#'   points <- runif_on_sphere(50L, d = 3L)
+#' } else {
+#'   points <- matrix(rnorm(50L * 3L), nrow = 50L, ncol = 3L)
+#'   points <- points / sqrt(apply(points, 1L, crossprod))
+#' }
 #' \donttest{open3d(windowRect = c(50, 50, 562, 562))
 #' plotGyrohull3d(
 #'   points, edgesColor = "brown",
-#'   facesColor = trek_pal("lcars_series"), g = function(u) 1-u^2
+#'   facesColor = pal, g = function(u) 1-u^2
 #' )}
 plotGyrohull3d <- function(
     points, s = 1, model = "U", iterations = 5, n = 100, edgesAsTubes = TRUE,

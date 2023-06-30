@@ -5,7 +5,7 @@ dllunload <- function(){
 }
 
 myinstall <- function() {
-  dllunload()
+  try(dllunload())
   if(rstudioapi::isAvailable()) {
     rstudioapi::restartSession(
       "devtools::install(quick = TRUE, keep_source = TRUE)"
@@ -18,7 +18,7 @@ myinstall <- function() {
 mydocument <- function() {
   if(rstudioapi::isAvailable()) {
     rstudioapi::restartSession(
-      "roxygen2::roxygenise(load_code = roxygen2::load_installed)" 
+      "roxygen2::roxygenise(load_code = roxygen2::load_installed)"
     )
   } else {
     roxygen2::roxygenise(load_code = roxygen2::load_installed)

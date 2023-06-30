@@ -352,10 +352,14 @@ gyrocentroid <- function(A, B, C, s = 1, model = "U"){
 #' shade3d(ABC, color = "navy", specular = "cyan")}
 #'
 #' # using a color palette ####
-#' library(trekcolors)
+#' if(require("trekcolors")) {
+#'   pal <- trek_pal("klingon")
+#' } else {
+#'   pal <- hcl.colors(32L, palette = "Rocket")
+#' }
 #' ABC <- gyrotriangle(
 #'   A, B, C, s = 0.5,
-#'   palette = trek_pal("klingon"), bias = 1.5, interpolate = "spline"
+#'   palette = pal, bias = 1.5, interpolate = "spline"
 #' )
 #' \donttest{open3d(windowRect = c(50, 50, 562, 562))
 #' view3d(zoom = 0.75)

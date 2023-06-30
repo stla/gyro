@@ -153,7 +153,11 @@ hdelaunay <- function(
 #'
 #' # example with colors given by a function ####
 #' library(gyro)
-#' library(trekcolors)
+#' if(require("trekcolors")) {
+#'   pal <- trek_pal("klingon")
+#' } else {
+#'   pal <- hcl.colors(32L, palette = "Rocket")
+#' }
 #'
 #' phi <- (1 + sqrt(5)) / 2
 #' theta <- head(seq(0, pi/2, length.out = 11), -1L)
@@ -167,7 +171,7 @@ hdelaunay <- function(
 #' hdel <- hdelaunay(pts, model = "M")
 #'
 #' fcolor <- function(t){
-#'   RGB <- colorRamp(trek_pal("klingon"))(t)
+#'   RGB <- colorRamp(pal)(t)
 #'   rgb(RGB[, 1L], RGB[, 2L], RGB[, 3L], maxColorValue = 255)
 #' }
 #'

@@ -1,9 +1,8 @@
 ## Testing environments
 
-- Local R-4.2.1 on Linux Mint 20.3
+- Local R-4.3.1 on Windows 10
 - win-builder devel
-- mac-builder
-- Ubuntu 20 via Github action
+- Ubuntu via Github action
 
 
 ## R CMD check results

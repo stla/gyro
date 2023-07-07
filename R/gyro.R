@@ -207,8 +207,76 @@ gyrosegment <- function(A, B, s = 1, model = "U", n = 100){
       )
     }
     Mgyrosegment(A, B, s, n)
-  }else{
+  } else {
     Ugyrosegment(A, B, s, n)
+  }
+}
+
+#' @title Gyroray
+#' @description Gyroray given an origin and a point.
+#'
+#' @encoding UTF-8
+#'
+#' @param O,A two distinct points (of the same dimension); the point
+#'   \code{O} is the origin of the gyroray
+#' @param s positive number, the radius of the Poincaré ball if
+#'   \code{model="M"}, otherwise, if \code{model="U"}, this number
+#'   defines the hyperbolic curvature
+#' @param tmax positive number controlling the length of the gyroray
+#' @param OtoA Boolean, whether the gyroray must be directed from
+#'   \code{O} to \code{A} or must be the opposite one
+#' @param model the hyperbolic model, either \code{"M"} (Möbius model, i.e.
+#'   Poincaré model) or \code{"U"} (Ungar model, i.e. hyperboloid model)
+#' @param n number of points forming the gyroray
+#'
+#' @return A numeric matrix with \code{n} rows. Each row is a point of the
+#'   gyroray with origin \code{O} (the first row) and passing through \code{A}
+#'   or not, according to \code{OtoA}.
+#' @export
+#' @examples
+#' library(gyro)
+#' # a 2D example ####
+#' O <- c(1, 2); A <- c(1, 1)
+#' opar <- par(mar = c(2, 2, 2, 0.5))
+#' plot(rbind(O, A), type = "p", pch = 19, xlab = NA, ylab = NA,
+#'      xlim = c(0, 2), ylim = c(0, 3), main = "s = 0.3")
+#' s <- 0.3
+#' ray <- gyroray(O, A, s)
+#' lines(ray, col = "blue", lwd = 2)
+#' text(t(O), expression(italic(O)), pos = 2)
+#' text(t(A), expression(italic(A)), pos = 3)
+#' # opposite gyroray
+#' yar <- gyroray(O, A, s, OtoA = FALSE)
+#' lines(yar, col = "red", lwd = 2)
+#' par(opar)
+gyroray <- function(O, A, s = 1, tmax = 20, OtoA = TRUE, model = "U", n = 300) {
+  stopifnot(isPoint(O))
+  stopifnot(isPoint(A))
+  stopifnot(length(O) == length(A))
+  stopifnot(isPositiveNumber(s))
+  stopifnot(isPositiveNumber(tmax))
+  stopifnot(isBoolean(OtoA))
+  stopifnot(isPositiveInteger(n))
+  stopifnot(n >= 2)
+  stopifnot(areDistinct(O, A))
+  if(OtoA) {
+    t_ <- seq(0, tmax, length.out = n)
+  } else {
+    t_ <- seq(-tmax, 0, length.out = n)
+  }
+  model <- match.arg(model, c("M", "U"))
+  if(model == "M") {
+    s2 <- s * s
+    if(dotprod(O) >= s2 || dotprod(A) >= s2){
+      stop(
+        "In the M\u00f6bius gyrovector space, points must be ",
+        "strictly inside the centered ball of radius `s`.",
+        call. = TRUE
+      )
+    }
+    t(vapply(t_, function(t) {MgyroABt(O, A, t, s)}, numeric(length(A))))
+  } else {
+    t(vapply(t_, function(t) {UgyroABt(O, A, t, s)}, numeric(length(A))))
   }
 }
 

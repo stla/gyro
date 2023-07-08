@@ -6,6 +6,7 @@ dllunload <- function(){
 
 myinstall <- function() {
   try(dllunload())
+  try(pkgload::unload("gyro"))
   if(rstudioapi::isAvailable()) {
     rstudioapi::restartSession(
       "devtools::install(quick = TRUE, keep_source = TRUE)"

@@ -35,6 +35,8 @@
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/rhombicTriacontahedron.gif)
 
+![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/greatDodecicosahedron.gif)
+
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/htiling.png)
 
 ![](https://raw.githubusercontent.com/stla/gyro/main/inst/images/hdelaunay.png)

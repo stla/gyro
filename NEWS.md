@@ -1,4 +1,4 @@
-# gyro 1.3.0 (2023-??-??)
+# gyro 1.3.0 (2023-08-07)
 
 - New function `gyroray`. 
 

@@ -9,7 +9,7 @@ myinstall <- function() {
   try(pkgload::unload("gyro"))
   if(rstudioapi::isAvailable()) {
     rstudioapi::restartSession(
-      "devtools::install(quick = TRUE, keep_source = TRUE)"
+      "pkgload::unload('gyro'); devtools::install(quick = TRUE, keep_source = TRUE)"
     )
   } else {
     devtools::install(quick = TRUE, keep_source = TRUE)

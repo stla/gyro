@@ -1,3 +1,9 @@
+# gyro 1.4.0 (2023-10-30)
+
+The package does no longer depend on the package 'randomcoloR'. But now it 
+depends on the packages 'colorsGen' and 'Polychrome'.
+
+
 # gyro 1.3.0 (2023-08-07)
 
 - New function `gyroray`. 

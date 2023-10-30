@@ -10,8 +10,8 @@ plotHdelaunay(
   edges = TRUE,
   circle = TRUE,
   color = "distinct",
-  hue = "random",
-  luminosity = "random"
+  distinctArgs = list(seedcolors = c("#ff0000", "#00ff00", "#0000ff")),
+  randomArgs = list(hue = "random", luminosity = "bright")
 )
 }
 \arguments{
@@ -26,15 +26,18 @@ Ungar model}
 
 \item{color}{this argument controls the colors of the triangles; it can be
 \code{NA} for no color, \code{"random"} for random colors generated
-with \code{\link[randomcoloR]{randomColor}}, \code{"distinct"} for
+with \code{\link[colsGen]{randomColor}}, \code{"distinct"} for
 distinct colors generated with
-\code{\link[randomcoloR]{distinctColorPalette}}, a single color,
+\code{\link[Polychrome]{createPalette}}, a single color,
 a vector of colors (color \code{i} attributed to the \code{i}-th
 triangle), or a vectorized function mapping each point in the unit
 interval to a color}
 
-\item{hue, luminosity}{passed to \code{\link[randomcoloR]{randomColor}}
-if \code{color="random"}}
+\item{distinctArgs}{if \code{color = "distinct"}, a list of arguments
+passed to \code{\link[Polychrome]{createPalette}}}
+
+\item{randomArgs}{if \code{color = "random"}, a list of arguments passed
+to \code{\link[colorsGen]{randomColor}}}
 }
 \value{
 No returned value, just generates a plot.

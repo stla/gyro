@@ -181,7 +181,7 @@ hdelaunay <- function(
 #' )
 plotHdelaunay <- function(
     hdel, vertices = TRUE, edges = TRUE, circle = TRUE,
-    color = "distinct",
+    color = "random",
     distinctArgs = list(seedcolors = c("#ff0000", "#00ff00", "#0000ff")),
     randomArgs = list(hue = "random", luminosity = "bright")
 ){

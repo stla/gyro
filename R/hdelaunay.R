@@ -122,7 +122,7 @@ hdelaunay <- function(
 #'   Ungar model
 #' @param color this argument controls the colors of the triangles; it can be
 #'   \code{NA} for no color, \code{"random"} for random colors generated
-#'   with \code{\link[colsGen]{randomColor}}, \code{"distinct"} for
+#'   with \code{\link[colorsGen]{randomColor}}, \code{"distinct"} for
 #'   distinct colors generated with
 #'   \code{\link[Polychrome]{createPalette}}, a single color,
 #'   a vector of colors (color \code{i} attributed to the \code{i}-th
